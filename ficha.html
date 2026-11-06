@@ -1,0 +1,2510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha do Personagem — Grimório RPG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="azul"]{
+  --void:#0A1220;
+  --void-2:#0F1B2E;
+  --panel:#132540;
+  --parchment:#E8E1CB;
+  --parchment-dim:#9FB0CF;
+  --parchment-faint:#67759A;
+  --brass:#B08D3E;
+  --brass-bright:#E7C877;
+  --accent:#2F5FA8;
+  --accent-bright:#5C8FE0;
+  --line: rgba(176,141,62,0.25);
+  --shadow: 0 12px 34px rgba(0,0,0,0.5);
+  --glow1: rgba(47,95,168,0.22);
+  --glow2: rgba(176,141,62,0.12);
+  --accent-wash: rgba(47,95,168,0.10);
+  --accent-wash-strong: rgba(47,95,168,0.20);
+  --hero-shadow: rgba(47,95,168,0.45);
+  --display: 'Cinzel', serif;
+  --display-deco: 'Cinzel Decorative', serif;
+  --body: 'EB Garamond', serif;
+}
+
+[data-theme="branco"]{
+  --void:#F7F1E3;
+  --void-2:#EFE6CF;
+  --panel:#FFFDF6;
+  --parchment:#2B2013;
+  --parchment-dim:#5B4A30;
+  --parchment-faint:#8A7A5C;
+  --brass:#9C7A2E;
+  --brass-bright:#C9A227;
+  --accent:#A8763A;
+  --accent-bright:#C89B4A;
+  --line: rgba(156,122,46,0.32);
+  --shadow: 0 10px 26px rgba(120,95,40,0.14);
+  --glow1: rgba(201,162,39,0.14);
+  --glow2: rgba(168,118,58,0.10);
+  --accent-wash: rgba(168,118,58,0.08);
+  --accent-wash-strong: rgba(168,118,58,0.16);
+  --hero-shadow: rgba(168,118,58,0.30);
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(1200px 700px at 15% -10%, var(--glow1), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, var(--glow2), transparent 55%),
+    var(--void);
+  color:var(--parchment);
+  font-family:var(--body);
+  font-size:18px;
+  line-height:1.7;
+  transition:background-color 0.4s ease, color 0.4s ease;
+}
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+}
+
+h1,h2,h3,.nav-item span{ font-family:var(--display); font-weight:600; letter-spacing:0.02em; margin:0; }
+a{ color:var(--brass-bright); text-decoration:none; }
+::selection{ background:var(--accent); color:#fff; }
+
+/* ============ ornamental divider ============ */
+.divider{ display:flex; align-items:center; gap:14px; margin:1.6rem 0; }
+.divider .line{ flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--brass), transparent); }
+.divider svg{ flex-shrink:0; opacity:0.85; color:var(--brass-bright); }
+
+/* ============ theme switcher ============ */
+.theme-switch{
+  display:flex; justify-content:center; align-items:center; gap:0.7rem;
+  padding:0.55rem 1rem;
+  background:var(--void-2);
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.theme-switch .label{
+  color:var(--parchment-faint);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  font-family:var(--display);
+  font-size:0.68rem;
+}
+.theme-switch .group{
+  display:inline-flex;
+  border:1px solid var(--line);
+  border-radius:999px;
+  overflow:hidden;
+}
+.theme-btn{
+  display:flex; align-items:center; gap:0.5rem;
+  padding:0.4rem 0.95rem;
+  background:transparent;
+  border:none;
+  color:var(--parchment-dim);
+  cursor:pointer;
+  font-family:var(--display);
+  font-size:0.78rem;
+  transition:all 0.25s ease;
+}
+.theme-btn .swatch{ width:11px; height:11px; border-radius:50%; box-shadow:0 0 0 1px rgba(0,0,0,0.25) inset; flex-shrink:0; }
+.theme-btn[data-theme="azul"] .swatch{ background:linear-gradient(135deg, #E7C877, #2F5FA8); }
+.theme-btn[data-theme="branco"] .swatch{ background:linear-gradient(135deg, #C9A227, #F7F1E3); }
+.theme-btn.active{ background:var(--accent-wash-strong); color:var(--parchment); }
+.theme-btn:hover{ color:var(--parchment); }
+
+/* ============ page header (small, on every inner page) ============ */
+header.page-head{
+  padding:3.6rem 1.5rem 2.6rem;
+  text-align:center;
+  border-bottom:1px solid var(--line);
+  position:relative;
+}
+header.page-head .eyebrow{
+  font-family:var(--display);
+  font-size:0.74rem;
+  letter-spacing:0.38em;
+  text-transform:uppercase;
+  color:var(--brass-bright);
+  display:block;
+  margin-bottom:0.9rem;
+}
+header.page-head h1{
+  font-family:var(--display-deco);
+  font-size:clamp(2rem, 4.6vw, 3rem);
+  color:var(--parchment);
+}
+header.page-head p{
+  max-width:560px;
+  margin:1rem auto 0;
+  color:var(--parchment-dim);
+  font-style:italic;
+}
+
+/* ============ hero (capa / home only) ============ */
+header.hero{
+  position:relative;
+  min-height:74vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:4.5rem 1.5rem 4rem;
+  overflow:hidden;
+  border-bottom:1px solid var(--line);
+}
+header.hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+  pointer-events:none;
+}
+.eyebrow{
+  font-family:var(--display);
+  font-size:0.78rem;
+  letter-spacing:0.42em;
+  text-transform:uppercase;
+  color:var(--brass-bright);
+  margin-bottom:1.4rem;
+}
+.hero h1{
+  font-family:var(--display-deco);
+  font-size:clamp(2.6rem, 6vw, 4.6rem);
+  color:var(--parchment);
+  text-shadow:0 2px 26px var(--hero-shadow);
+  line-height:1.08;
+}
+.hero p.tagline{
+  max-width:640px;
+  margin:1.6rem auto 0;
+  color:var(--parchment-dim);
+  font-size:1.22rem;
+  font-style:italic;
+}
+.hero .note{
+  margin-top:2.6rem;
+  font-size:0.86rem;
+  color:var(--parchment-faint);
+  border:1px solid var(--line);
+  padding:0.6rem 1.1rem;
+  border-radius:3px;
+  background:rgba(0,0,0,0.08);
+}
+.hero .cards{
+  margin-top:3.2rem;
+  display:flex; flex-wrap:wrap; justify-content:center; gap:0.8rem;
+}
+.hero .cards a{
+  display:flex; align-items:center; gap:0.5rem;
+  padding:0.7rem 1.3rem;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--parchment-dim);
+  font-family:var(--display);
+  font-size:0.88rem;
+  transition:all 0.25s ease;
+}
+.hero .cards a:hover{ color:var(--parchment); border-color:var(--brass); background:var(--accent-wash); }
+.hero .cards .seal{
+  width:8px; height:8px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--brass-bright), var(--accent) 75%);
+}
+
+/* ============ nav — wax seals, real links ============ */
+nav.tabs{
+  position:sticky; top:0; z-index:20;
+  display:flex; justify-content:center; gap:0.4rem;
+  padding:0.9rem 1rem;
+  background:var(--void-2);
+  border-bottom:1px solid var(--line);
+  overflow-x:auto;
+}
+.nav-item{
+  display:flex; align-items:center; gap:0.55rem;
+  padding:0.55rem 1.1rem;
+  border:1px solid transparent;
+  border-radius:999px;
+  background:none;
+  color:var(--parchment-dim);
+  font-size:0.92rem;
+  white-space:nowrap;
+  transition:all 0.25s ease;
+}
+.nav-item .seal{
+  width:9px; height:9px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--brass-bright), var(--accent) 75%);
+  box-shadow:0 0 0 2px rgba(176,141,62,0.15);
+  transition:box-shadow 0.25s ease, transform 0.25s ease;
+}
+.nav-item:hover{ color:var(--parchment); border-color:var(--line); }
+.nav-item.active{
+  color:var(--parchment);
+  background:var(--accent-wash-strong);
+  border-color:var(--brass);
+}
+.nav-item.active .seal{
+  box-shadow:0 0 0 3px rgba(217,179,108,0.28), 0 0 14px 2px var(--accent-bright);
+  transform:scale(1.15);
+}
+
+/* ============ page body ============ */
+main{ max-width:920px; margin:0 auto; padding:0 1.5rem; }
+section.panel{ padding:4.2rem 0; }
+
+.kicker{
+  font-family:var(--display);
+  font-size:0.78rem;
+  letter-spacing:0.32em;
+  text-transform:uppercase;
+  color:var(--brass-bright);
+  display:block;
+  margin-bottom:0.8rem;
+}
+section.panel h2{ font-size:clamp(1.7rem, 3.4vw, 2.3rem); color:var(--parchment); }
+
+.lede{
+  font-size:1.28rem;
+  color:var(--parchment-dim);
+  max-width:60ch;
+  margin-top:1rem;
+}
+
+.lore p{ max-width:66ch; color:var(--parchment); }
+.lore p:first-of-type::first-letter{
+  font-family:var(--display-deco);
+  font-size:3.6rem;
+  float:left;
+  line-height:0.8;
+  padding:0.1rem 0.5rem 0 0;
+  color:var(--brass-bright);
+}
+.lore .aside{
+  margin-top:1.6rem;
+  padding:1.1rem 1.3rem;
+  border-left:2px solid var(--accent-bright);
+  background:var(--accent-wash);
+  font-style:italic;
+  color:var(--parchment-dim);
+}
+
+/* ============ card grids (raças / classes) ============ */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+  gap:1.1rem;
+  margin-top:2.2rem;
+}
+.card{
+  background:linear-gradient(180deg, var(--panel), var(--void-2));
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:1.5rem 1.5rem 1.6rem;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.card::before{
+  content:"";
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--brass), transparent);
+  opacity:0.7;
+}
+.card .icon{ width:38px; height:38px; margin-bottom:0.9rem; color:var(--brass-bright); }
+.card h3{ font-size:1.15rem; color:var(--parchment); margin-bottom:0.35rem; }
+.card .role{ font-size:0.82rem; color:var(--brass-bright); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.8rem; display:block; }
+.card p{ color:var(--parchment-dim); font-size:0.98rem; margin:0 0 0.9rem; }
+.card ul{ margin:0; padding-left:1.15rem; color:var(--parchment-dim); font-size:0.92rem; }
+.card li{ margin-bottom:0.3rem; }
+.card li b{ color:var(--parchment); font-weight:600; }
+
+/* ============ regras ============ */
+.rule-block{
+  margin-top:2.2rem;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+}
+.rule-block h3{
+  font-size:1rem;
+  padding:1rem 1.4rem;
+  background:var(--accent-wash-strong);
+  border-bottom:1px solid var(--line);
+  color:var(--parchment);
+}
+.rule-block .body{ padding:1.3rem 1.4rem 1.5rem; color:var(--parchment-dim); font-size:0.98rem; }
+.rule-block table{ width:100%; border-collapse:collapse; margin-top:0.8rem; font-size:0.92rem; }
+.rule-block td{ padding:0.4rem 0.6rem; border-bottom:1px solid var(--line); color:var(--parchment-dim); }
+.rule-block td:first-child{ color:var(--brass-bright); font-family:var(--display); font-size:0.82rem; white-space:nowrap; }
+
+/* ============ footer ============ */
+footer{
+  text-align:center;
+  padding:3.5rem 1.5rem 4rem;
+  color:var(--parchment-faint);
+  font-size:0.86rem;
+}
+footer .divider{ max-width:220px; margin-left:auto; margin-right:auto; }
+
+@media (max-width:640px){
+  section.panel{ padding:3rem 0; }
+  nav.tabs{ justify-content:flex-start; }
+}
+
+/* ============ ficha automática — forms & app UI ============ */
+.sheet-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:1rem; margin-top:1.3rem; }
+.field{ display:flex; flex-direction:column; gap:0.4rem; }
+.field label{
+  font-family:var(--display); font-size:0.7rem; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--brass-bright);
+}
+.field .hint{ font-size:0.78rem; color:var(--parchment-faint); margin-top:0.1rem; }
+
+input[type=text], input[type=number], select, textarea{
+  background:rgba(0,0,0,0.16);
+  border:1px solid var(--line);
+  border-radius:5px;
+  padding:0.6rem 0.75rem;
+  color:var(--parchment);
+  font-family:var(--body);
+  font-size:1rem;
+  width:100%;
+}
+[data-theme="branco"] input[type=text], [data-theme="branco"] input[type=number],
+[data-theme="branco"] select, [data-theme="branco"] textarea{
+  background:rgba(0,0,0,0.05);
+}
+textarea{ resize:vertical; min-height:70px; }
+input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--brass); }
+input[type=checkbox]{ accent-color:var(--accent); width:16px; height:16px; }
+
+.btn{
+  padding:0.6rem 1.1rem;
+  border-radius:6px;
+  border:1px solid var(--line);
+  background:var(--accent-wash);
+  color:var(--parchment);
+  font-family:var(--display);
+  font-size:0.85rem;
+  cursor:pointer;
+  transition:all 0.2s ease;
+  white-space:nowrap;
+}
+.btn:hover{ border-color:var(--brass); background:var(--accent-wash-strong); }
+.btn-gold{
+  background:var(--brass-bright);
+  border-color:var(--brass-bright);
+  color:#1a1206;
+  font-weight:600;
+}
+.btn-gold:hover{ filter:brightness(1.08); }
+.btn-ghost{ background:transparent; }
+.btn-danger{ border-color:rgba(180,60,60,0.5); color:#e08a8a; background:rgba(180,60,60,0.08); }
+.btn-danger:hover{ background:rgba(180,60,60,0.18); }
+.btn-row{ display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:1rem; }
+
+.attr-box{
+  display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+  background:var(--panel); border:1px solid var(--line); border-radius:8px;
+  padding:1.1rem 0.8rem;
+}
+.attr-box .attr-name{ font-family:var(--display); font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass-bright); }
+.attr-box input{ text-align:center; font-family:var(--display); font-size:1.3rem; width:80px; padding:0.4rem; }
+
+.pericia-row{
+  display:grid; grid-template-columns: 1fr auto auto auto auto; gap:0.6rem; align-items:center;
+  padding:0.6rem 0; border-bottom:1px solid var(--line);
+}
+.pericia-row:last-child{ border-bottom:none; }
+.pericia-row .p-nome{ font-size:0.95rem; }
+.pericia-row select{ width:auto; padding:0.4rem 0.5rem; font-size:0.85rem; }
+.pericia-row input[type=number]{ width:60px; padding:0.4rem; text-align:center; }
+.pericia-row label{ display:flex; align-items:center; gap:0.35rem; font-size:0.78rem; color:var(--parchment-dim); }
+.p-formula{
+  font-family:var(--display); font-size:0.86rem; font-weight:600;
+  color:var(--brass-bright); background:var(--accent-wash-strong);
+  border:1px solid var(--line); border-radius:5px;
+  padding:0.35rem 0.65rem; white-space:nowrap; min-width:76px; text-align:center;
+}
+
+.quick-chips{ display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.9rem; }
+.chip{
+  padding:0.35rem 0.8rem; border-radius:999px; border:1px solid var(--line);
+  background:transparent; color:var(--parchment-dim); font-size:0.78rem; cursor:pointer;
+  transition:all 0.2s ease;
+}
+.chip:hover{ border-color:var(--brass); color:var(--parchment); }
+
+.condition-chip{
+  display:inline-flex; align-items:center; gap:0.4rem;
+  padding:0.5rem 1rem; border-radius:999px; border:1px solid var(--line);
+  background:transparent; color:var(--parchment-dim); font-size:0.85rem; cursor:pointer;
+  transition:all 0.2s ease;
+}
+.condition-chip.active{ background:var(--accent-wash-strong); border-color:var(--brass); color:var(--parchment); }
+.condition-grid{ display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1.2rem; }
+
+.pe-total, .pg-total{
+  font-family:var(--display-deco); font-size:2.4rem; color:var(--brass-bright); line-height:1;
+}
+.stat-card{ text-align:center; }
+
+.log-list, .item-list{ margin-top:1.1rem; display:flex; flex-direction:column; gap:0.5rem; }
+.log-entry, .item-entry{
+  display:flex; justify-content:space-between; align-items:center; gap:0.8rem;
+  padding:0.6rem 0.9rem; background:var(--panel); border:1px solid var(--line); border-radius:5px;
+  font-size:0.9rem;
+}
+.log-entry .val{ font-family:var(--display); color:var(--brass-bright); white-space:nowrap; }
+.item-entry .meta{ color:var(--parchment-dim); font-size:0.82rem; }
+.remove-btn{
+  background:none; border:none; color:var(--parchment-faint); cursor:pointer; font-size:1.1rem;
+  line-height:1; padding:0 0.3rem;
+}
+.remove-btn:hover{ color:#e08a8a; }
+
+.empty-note{ color:var(--parchment-faint); font-size:0.88rem; font-style:italic; margin-top:0.8rem; }
+#raca-hint, #classe-hint{ min-height:2.7em; }
+
+.save-indicator{
+  position:fixed; bottom:1.2rem; right:1.2rem; z-index:30;
+  background:var(--panel); border:1px solid var(--brass); color:var(--parchment);
+  padding:0.55rem 1rem; border-radius:6px; font-size:0.82rem;
+  opacity:0; transform:translateY(8px); transition:all 0.3s ease; pointer-events:none;
+  box-shadow:var(--shadow);
+}
+.save-indicator.show{ opacity:1; transform:translateY(0); }
+
+.file-input-wrap{ position:relative; overflow:hidden; display:inline-block; }
+.file-input-wrap input[type=file]{
+  position:absolute; left:0; top:0; opacity:0; width:100%; height:100%; cursor:pointer;
+}
+
+@media (max-width:640px){
+  .pericia-row{ grid-template-columns: 1fr; gap:0.4rem; }
+}
+
+/* ============ ficha — layout tipo dossiê de personagem ============ */
+.sheet{
+  border:1px solid var(--brass);
+  border-radius:10px;
+  background:linear-gradient(180deg, var(--panel), var(--void-2));
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  margin:2rem 0 2.5rem;
+  position:relative;
+}
+.sheet::before{
+  content:"";
+  position:absolute; inset:6px;
+  border:1px solid rgba(176,141,62,0.18);
+  border-radius:7px;
+  pointer-events:none;
+}
+
+.sheet-header{
+  padding:1.8rem 1.8rem 1.6rem;
+  border-bottom:2px solid var(--brass);
+  background:var(--accent-wash);
+}
+.sheet-header-flex{ display:flex; gap:1.8rem; align-items:flex-start; flex-wrap:wrap; }
+.sheet-header-main{ flex:1; min-width:280px; display:flex; flex-direction:column; gap:1.7rem; }
+.sheet-header-top{ display:flex; gap:1.3rem; align-items:flex-start; flex-wrap:wrap; }
+.sheet-identity{ flex:1; min-width:220px; }
+.sheet-identity .field{ margin-bottom:0.65rem; }
+.identity-row{ display:flex; gap:0.8rem; flex-wrap:wrap; }
+.identity-row .field{ flex:1; min-width:110px; }
+.sheet-resources{ display:flex; gap:0.7rem; }
+.res-badge{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  width:64px; height:64px; border-radius:50%;
+  border:2px solid var(--brass); background:var(--void-2); flex-shrink:0;
+}
+.res-total{ font-family:var(--display-deco); font-size:1.25rem; color:var(--brass-bright); line-height:1; }
+.res-label{ font-family:var(--display); font-size:0.58rem; letter-spacing:0.1em; color:var(--parchment-dim); text-transform:uppercase; margin-top:0.15rem; }
+
+.sheet-header-bottom{ display:flex; flex-wrap:wrap; gap:1.8rem; align-items:center; }
+.attr-row{ display:flex; gap:0.7rem; flex-wrap:wrap; }
+.attr-hex{ display:flex; flex-direction:column; align-items:center; gap:0.4rem; width:74px; }
+.attr-hex input{
+  width:100%; text-align:center; font-family:var(--display-deco); font-size:1.35rem;
+  background:var(--void-2); border:2px solid var(--brass); border-radius:10px;
+  padding:0.5rem 0.2rem; color:var(--parchment);
+}
+.attr-hex .attr-name{ font-family:var(--display); font-size:0.6rem; letter-spacing:0.07em; text-transform:uppercase; color:var(--parchment-dim); text-align:center; }
+
+.vitals{ flex:1; min-width:240px; display:flex; flex-direction:column; gap:0.7rem; }
+.vital-bar{ display:flex; align-items:center; gap:0.7rem; }
+.vital-label{ width:54px; flex-shrink:0; font-family:var(--display); font-size:0.72rem; color:var(--brass-bright); text-transform:uppercase; letter-spacing:0.05em; }
+.bar-track{ flex:1; height:14px; background:rgba(0,0,0,0.28); border:1px solid var(--line); border-radius:999px; overflow:hidden; }
+.bar-fill{ height:100%; width:0%; transition:width 0.3s ease; }
+.vital-bar.vida .bar-fill{ background:linear-gradient(90deg, #7A2030, #C2455A); }
+.vital-bar.mana .bar-fill{ background:linear-gradient(90deg, var(--accent), var(--accent-bright)); }
+.vital-inputs{ display:flex; align-items:center; gap:0.3rem; font-size:0.85rem; color:var(--parchment-dim); white-space:nowrap; flex-shrink:0; }
+.vital-inputs input{ width:48px; padding:0.3rem; text-align:center; }
+
+.sheet-body-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:1.2rem; padding:1.6rem 1.8rem; }
+.sheet-col{ display:flex; flex-direction:column; gap:1.2rem; }
+.sheet-panel{ background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+.sheet-panel h3{ font-size:0.92rem; padding:0.85rem 1.2rem; background:var(--accent-wash-strong); border-bottom:1px solid var(--line); color:var(--parchment); font-family:var(--display); }
+.sheet-panel .body{ padding:1.1rem 1.2rem 1.3rem; }
+
+@media (max-width:860px){
+  .sheet-body-grid{ grid-template-columns:1fr; }
+  .sheet-header-flex{ flex-direction:column; align-items:center; }
+  .sheet-header-top{ flex-direction:column; }
+  .sheet-resources{ align-self:flex-start; }
+}
+
+/* treinado como bolinha preenchida, estilo dossiê */
+.pericia-row label input[type=checkbox]{
+  appearance:none; -webkit-appearance:none;
+  width:17px; height:17px; border-radius:50%;
+  border:2px solid var(--brass); background:transparent; cursor:pointer; margin:0;
+}
+.pericia-row label input[type=checkbox]:checked{ background:var(--brass-bright); border-color:var(--brass-bright); }
+
+/* ============ retrato do personagem ============ */
+.portrait-col{ display:flex; flex-direction:column; align-items:center; gap:0.7rem; width:230px; flex-shrink:0; }
+.portrait-frame{
+  cursor:pointer; background-color:var(--void-2); border:3px solid var(--brass);
+  box-shadow:var(--shadow); display:flex; align-items:center; justify-content:center;
+  overflow:hidden; background-repeat:no-repeat; transition:width 0.2s ease, height 0.2s ease;
+}
+.portrait-frame.shape-redondo{ border-radius:50%; }
+.portrait-frame.shape-quadrado{ border-radius:12px; }
+.portrait-frame.shape-retrato{ border-radius:10px; }
+.portrait-placeholder{
+  display:flex; flex-direction:column; align-items:center; gap:0.35rem;
+  color:var(--parchment-faint); font-size:0.64rem; text-align:center; padding:0.4rem;
+}
+.portrait-placeholder svg{ width:24px; height:24px; color:var(--brass-bright); }
+
+.portrait-controls{ width:100%; display:flex; flex-direction:column; gap:0.3rem; }
+#portrait-adjust{ display:flex; flex-direction:column; gap:0.25rem; }
+.portrait-controls .row{ display:flex; gap:0.4rem; }
+.portrait-controls select{ font-size:0.72rem; padding:0.35rem 0.4rem; width:auto; flex:1; }
+.portrait-controls label{
+  font-size:0.6rem; color:var(--parchment-faint); text-transform:uppercase;
+  letter-spacing:0.05em; display:flex; justify-content:space-between; margin-top:0.2rem;
+}
+.portrait-controls input[type=range]{ width:100%; accent-color:var(--accent); }
+.mini-btn{ padding:0.4rem 0.5rem; font-size:0.72rem; flex:1; }
+
+@media (max-width:860px){
+  .portrait-col{ width:100%; align-items:center; }
+}
+
+
+/* ============ habilidades em cards + inventário com quantidade ============ */
+.hab-form{ display:grid; grid-template-columns:repeat(6, 1fr); gap:0.7rem; }
+.hab-form .f-nome{ grid-column:span 3; }
+.hab-form .f-mini{ grid-column:span 1; }
+.hab-form .f-half{ grid-column:span 3; }
+.hab-form .f-full{ grid-column:span 6; }
+.edit-banner{
+  margin-bottom:0.8rem; padding:0.5rem 0.8rem; border-left:2px solid var(--accent-bright);
+  background:var(--accent-wash); color:var(--parchment-dim); font-size:0.88rem; font-style:italic;
+}
+.edit-banner[hidden], #hab-cancel[hidden]{ display:none; }
+
+.hab-grid, .inv-grid{
+  margin-top:1.2rem; display:grid; gap:0.8rem;
+  grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+}
+.inv-grid{ grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:0.6rem; }
+.hab-grid .empty-note, .inv-grid .empty-note{ grid-column:1 / -1; margin-top:0; }
+
+.hab-card{
+  background:linear-gradient(180deg, var(--panel), var(--void-2));
+  border:1px solid var(--line); border-radius:7px; padding:0.9rem 1rem 1rem;
+  display:flex; flex-direction:column; gap:0.7rem; position:relative;
+}
+.hab-card::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--brass), transparent); opacity:0.7;
+}
+.hab-card.editing{ border-color:var(--brass-bright); box-shadow:0 0 0 1px var(--brass-bright); }
+.hab-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:0.6rem; }
+.hab-title{ display:flex; align-items:center; gap:0.55rem; min-width:0; }
+.hab-name{ font-family:var(--display); font-size:0.98rem; color:var(--parchment); line-height:1.25; word-break:break-word; }
+.hab-rank{
+  flex-shrink:0; font-family:var(--display); font-size:0.78rem; color:var(--brass-bright);
+  border:1px solid var(--brass); border-radius:4px; padding:0.1rem 0.45rem; background:var(--accent-wash);
+}
+.hab-actions{ display:flex; gap:0.1rem; flex-shrink:0; }
+.hab-actions .remove-btn{ font-size:1rem; }
+.hab-actions .edit-btn:hover{ color:var(--brass-bright); }
+.hab-costs{ display:flex; gap:0.4rem; flex-wrap:wrap; }
+.hab-cost{
+  font-family:var(--display); font-size:0.74rem; letter-spacing:0.04em;
+  padding:0.18rem 0.6rem; border-radius:999px; border:1px solid var(--line); color:var(--parchment-dim);
+}
+.hab-cost b{ color:var(--brass-bright); font-weight:600; }
+.hab-cost.mana b{ color:var(--accent-bright); }
+.hab-stats{ display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; }
+.hab-stat{ background:var(--accent-wash); border:1px solid var(--line); border-radius:5px; padding:0.4rem 0.6rem; }
+.hab-stat.wide{ grid-column:1 / -1; }
+.hab-stat .lbl{
+  display:block; font-family:var(--display); font-size:0.62rem; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--brass-bright); margin-bottom:0.1rem;
+}
+.hab-stat .val{ font-size:0.92rem; color:var(--parchment); white-space:pre-wrap; word-break:break-word; }
+.hab-stat .val.none{ color:var(--parchment-faint); }
+
+.inv-item{
+  display:flex; align-items:center; justify-content:space-between; gap:0.6rem;
+  padding:0.5rem 0.7rem; background:var(--panel); border:1px solid var(--line); border-radius:5px;
+}
+.inv-item.zero .inv-name{ opacity:0.5; text-decoration:line-through; }
+.inv-name{ font-size:0.95rem; min-width:0; word-break:break-word; }
+.inv-ctrl{ display:flex; align-items:center; gap:0.3rem; flex-shrink:0; }
+.qty-btn{
+  width:28px; height:28px; border-radius:5px; border:1px solid var(--line);
+  background:var(--accent-wash); color:var(--parchment); font-size:1.05rem; line-height:1;
+  cursor:pointer; transition:all 0.2s ease;
+}
+.qty-btn:hover{ border-color:var(--brass); background:var(--accent-wash-strong); }
+.inv-ctrl input[type=number]{
+  width:56px; padding:0.25rem 0.3rem; text-align:center; font-family:var(--display); font-size:0.9rem;
+  -moz-appearance:textfield;
+}
+.inv-ctrl input[type=number]::-webkit-outer-spin-button,
+.inv-ctrl input[type=number]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+
+@media (max-width:640px){
+  .hab-form .f-nome, .hab-form .f-half, .hab-form .f-full{ grid-column:span 6; }
+  .hab-form .f-mini{ grid-column:span 2; }
+}
+
+/* ============ aba do Mestre ============ */
+[hidden]{ display:none !important; }
+main.wide{ max-width:1240px; }
+.mode-tabs{ display:flex; justify-content:center; gap:0.5rem; margin-top:1.8rem; flex-wrap:wrap; }
+.mode-tab{
+  padding:0.6rem 1.4rem; border-radius:999px; border:1px solid var(--line); background:transparent;
+  color:var(--parchment-dim); font-family:var(--display); font-size:0.9rem; cursor:pointer; transition:all 0.25s ease;
+}
+.mode-tab:hover{ color:var(--parchment); border-color:var(--brass); }
+.mode-tab.active{ background:var(--accent-wash-strong); color:var(--parchment); border-color:var(--brass); }
+
+.entry-banner{
+  margin-top:1.4rem; padding:0.8rem 1.1rem; border:1px solid var(--brass); border-radius:8px;
+  background:var(--accent-wash-strong); display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+}
+.entry-banner-text{ color:var(--parchment-dim); font-size:0.95rem; }
+.entry-banner-text strong{ color:var(--parchment); }
+.entry-banner-actions{ display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap; }
+.entry-banner-actions label{ font-family:var(--display); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--brass-bright); }
+.entry-banner-actions select{ width:auto; padding:0.4rem 0.6rem; }
+
+.master-sheet{ padding:1.8rem; }
+.master-head h2{ font-size:clamp(1.5rem, 3vw, 2rem); color:var(--parchment); }
+.master-toolbar{ margin-top:1.4rem; display:flex; flex-direction:column; gap:0.8rem; }
+.master-cats{ display:flex; flex-wrap:wrap; gap:0.5rem; }
+.master-chip{ padding:0.4rem 0.9rem; font-size:0.82rem; }
+.master-actions{ margin-top:1rem; display:flex; flex-wrap:wrap; gap:1rem 1.6rem; align-items:center; }
+.master-action{ display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
+.master-action select{ width:auto; padding:0.5rem 0.6rem; font-size:0.9rem; }
+.master-hint{ margin:1rem 0 0; font-size:0.84rem; color:var(--parchment-faint); font-style:italic; max-width:80ch; }
+
+.master-grid{
+  margin-top:1.4rem; display:grid; gap:1rem; align-items:start;
+  grid-template-columns:repeat(auto-fill, minmax(330px, 1fr));
+}
+.master-grid .empty-note{ grid-column:1 / -1; margin-top:0; }
+
+.m-card{
+  background:linear-gradient(180deg, var(--panel), var(--void-2));
+  border:1px solid var(--line); border-radius:8px; padding:1rem 1.1rem 1.1rem;
+  display:flex; flex-direction:column; gap:0.8rem; position:relative; box-shadow:var(--shadow);
+}
+.m-card::before{ content:""; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg, transparent, var(--brass), transparent); opacity:0.7; }
+.m-card.open{ border-color:var(--brass); }
+.m-card.down{ opacity:0.72; }
+.m-card.down .m-name::after{ content:" ☠"; }
+.m-top{ display:flex; align-items:center; gap:0.8rem; }
+.m-avatar{
+  width:52px; height:52px; border-radius:50%; flex-shrink:0; overflow:hidden; display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--brass); background:var(--accent-wash-strong); font-family:var(--display); font-size:1.2rem; color:var(--brass-bright);
+}
+.m-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+.m-id{ flex:1; min-width:0; display:flex; flex-direction:column; gap:0.15rem; }
+.m-name{ font-family:var(--display); font-size:1.02rem; color:var(--parchment); line-height:1.2; word-break:break-word; }
+.m-sub{ font-size:0.82rem; color:var(--parchment-dim); }
+.m-badge{
+  align-self:flex-start; font-family:var(--display); font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase;
+  padding:0.12rem 0.55rem; border-radius:999px; border:1px solid var(--line); color:var(--brass-bright); background:var(--accent-wash);
+}
+.m-card[data-cat="monstro"] .m-badge{ color:#e08a8a; border-color:rgba(180,60,60,0.5); background:rgba(180,60,60,0.08); }
+.m-card[data-cat="npc"] .m-badge{ color:var(--accent-bright); }
+.m-card[data-cat="mestre"] .m-badge{ color:var(--brass-bright); border-color:var(--brass); }
+.m-actions{ display:flex; gap:0.1rem; flex-shrink:0; align-self:flex-start; }
+.m-actions .remove-btn{ font-size:1rem; padding:0.1rem 0.35rem; }
+.m-actions .remove-btn:hover{ color:var(--brass-bright); }
+.m-actions .remove-btn.danger:hover{ color:#e08a8a; }
+
+.m-attrs{ display:grid; grid-template-columns:repeat(4, 1fr); gap:0.4rem; }
+.m-attr{ text-align:center; background:var(--accent-wash); border:1px solid var(--line); border-radius:5px; padding:0.3rem 0.2rem; }
+.m-attr .n{ display:block; font-family:var(--display); font-size:1.05rem; color:var(--parchment); line-height:1.1; }
+.m-attr .l{ display:block; font-family:var(--display); font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--brass-bright); }
+
+.m-vitals{ display:flex; flex-direction:column; gap:0.45rem; }
+.m-vitals .vital-label{ width:40px; font-size:0.66rem; }
+.m-vitals .vital-inputs input[type=number]{
+  width:54px; padding:0.2rem 0.25rem; text-align:center; font-family:var(--display); font-size:0.85rem; -moz-appearance:textfield;
+}
+.m-vitals .vital-inputs input[type=number]::-webkit-outer-spin-button,
+.m-vitals .vital-inputs input[type=number]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+.m-vitals .qty-btn{ width:24px; height:24px; font-size:0.95rem; }
+
+.m-conds{ display:flex; flex-wrap:wrap; gap:0.35rem; }
+.m-cond{ font-size:0.74rem; padding:0.1rem 0.55rem; border-radius:999px; border:1px solid var(--brass); background:var(--accent-wash-strong); color:var(--parchment); }
+
+.m-detail{ display:flex; flex-direction:column; gap:1.1rem; border-top:1px solid var(--line); padding-top:1rem; }
+.m-section h4{
+  margin:0 0 0.5rem; font-family:var(--display); font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass-bright); font-weight:600;
+}
+.m-section .condition-grid{ margin-top:0; }
+.m-section .condition-chip{ padding:0.35rem 0.8rem; font-size:0.8rem; }
+.m-section .hab-grid{ margin-top:0; }
+.m-pericias{ display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:0.35rem 0.8rem; margin-top:0.6rem; font-size:0.85rem; color:var(--parchment-dim); }
+.m-pericias .tr{ color:var(--parchment); }
+.m-pericias .tr::before{ content:"● "; color:var(--brass-bright); }
+.m-pericias .f{ font-family:var(--display); font-size:0.78rem; color:var(--brass-bright); }
+details.m-det summary{ cursor:pointer; font-family:var(--display); font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass-bright); }
+.m-inv{ display:flex; flex-wrap:wrap; gap:0.4rem; }
+.m-inv span{ font-size:0.85rem; padding:0.2rem 0.7rem; border:1px solid var(--line); border-radius:999px; background:var(--panel); color:var(--parchment-dim); }
+.m-inv span b{ color:var(--brass-bright); font-family:var(--display); font-weight:600; }
+.m-section textarea{ min-height:90px; }
+.m-none{ font-size:0.88rem; font-style:italic; color:var(--parchment-faint); margin:0; }
+
+.m-confirm-row{
+  display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; padding:0.5rem 0.7rem;
+  border:1px solid rgba(180,60,60,0.5); background:rgba(180,60,60,0.08); border-radius:6px;
+}
+.m-confirm-text{ flex:1 1 100%; font-size:0.85rem; color:#e08a8a; }
+.m-mini{ padding:0.3rem 0.8rem; font-size:0.78rem; }
+
+@media (max-width:640px){
+  .master-sheet{ padding:1.2rem; }
+}
+</style>
+</head>
+<body>
+<div class="theme-switch">
+  <span class="label">Tema</span>
+  <div class="group">
+    <button type="button" class="theme-btn" data-theme="azul"><span class="swatch"></span>Azul Místico</button>
+    <button type="button" class="theme-btn" data-theme="branco"><span class="swatch"></span>Branco &amp; Dourado</button>
+  </div>
+</div>
+
+<nav class="tabs">
+  <a class="nav-item" href="index.html"><span class="seal"></span><span>Início</span></a>
+  <a class="nav-item" href="historia.html"><span class="seal"></span><span>História</span></a>
+  <a class="nav-item" href="racas.html"><span class="seal"></span><span>Raças</span></a>
+  <a class="nav-item" href="classes.html"><span class="seal"></span><span>Classes</span></a>
+  <a class="nav-item" href="regras.html"><span class="seal"></span><span>Regras</span></a>
+  <a class="nav-item active" href="ficha.html"><span class="seal"></span><span>Ficha</span></a>
+</nav>
+
+<header class="page-head">
+  <span class="eyebrow">Personagem</span>
+  <h1>Ficha Automática</h1>
+  <p>Preencha, role dados e acompanhe sua evolução direto aqui. Tudo é salvo automaticamente neste navegador.</p>
+</header>
+
+<main id="main-wrap">
+
+  <div class="mode-tabs" role="tablist">
+    <button type="button" class="mode-tab active" id="tabbtn-ficha" role="tab">📜 Minha Ficha</button>
+    <button type="button" class="mode-tab" id="tabbtn-mestre" role="tab">🛡 Mestre</button>
+  </div>
+
+<div id="tab-ficha">
+
+  <div class="entry-banner" id="entry-banner" hidden>
+    <div class="entry-banner-text">Editando na biblioteca do Mestre: <strong id="entry-banner-name"></strong></div>
+    <div class="entry-banner-actions">
+      <label for="entry-cat">Categoria</label>
+      <select id="entry-cat"></select>
+      <button type="button" class="btn btn-gold" id="entry-done">✓ Concluir e voltar ao Mestre</button>
+    </div>
+  </div>
+
+  <div class="sheet">
+
+    <!-- ============ CABEÇALHO DO DOSSIÊ ============ -->
+    <div class="sheet-header">
+      <div class="sheet-header-flex">
+        <div class="portrait-col">
+          <div class="portrait-frame shape-redondo" id="portrait-frame">
+            <div class="portrait-placeholder" id="portrait-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 5c3-1 6-1 8 0v14c-2-1-5-1-8 0V5Z"/><path d="M20 5c-3-1-6-1-8 0v14c2-1 5-1 8 0V5Z"/></svg>
+              <span>Adicionar foto</span>
+            </div>
+          </div>
+          <input type="file" id="portrait-input" accept="image/*" style="display:none">
+          <div class="portrait-controls" id="portrait-controls" style="display:none;">
+            <div class="row">
+              <select id="shape-select">
+                <option value="redondo">Redondo</option>
+                <option value="quadrado">Quadrado</option>
+                <option value="retrato">Retrato</option>
+              </select>
+              <select id="size-select">
+                <option value="pequeno">P</option>
+                <option value="medio">M</option>
+                <option value="grande">G</option>
+              </select>
+            </div>
+            <div id="portrait-adjust">
+              <label>Zoom <span id="zoom-val">100%</span></label>
+              <input type="range" id="zoom-range" min="100" max="250" value="100">
+              <label>Posição horizontal</label>
+              <input type="range" id="posx-range" min="0" max="100" value="50">
+              <label>Posição vertical</label>
+              <input type="range" id="posy-range" min="0" max="100" value="50">
+              <button type="button" class="btn btn-gold mini-btn" id="portrait-pronto" style="width:100%; margin-top:0.3rem;">✓ Pronto</button>
+            </div>
+            <button type="button" class="btn mini-btn" id="portrait-editar" style="width:100%; display:none;">Editar enquadramento</button>
+            <div class="row">
+              <button type="button" class="btn mini-btn" id="portrait-troca">Trocar</button>
+              <button type="button" class="btn btn-danger mini-btn" id="portrait-remove">Remover</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet-header-main">
+          <div class="sheet-header-top">
+            <div class="sheet-identity">
+              <div class="field">
+                <label for="f-nome">Nome do personagem</label>
+                <input type="text" id="f-nome" placeholder="Ex: Kaelen Vento-Cinza">
+              </div>
+              <div class="identity-row">
+                <div class="field"><label for="f-jogador">Jogador</label><input type="text" id="f-jogador" placeholder="Seu nome"></div>
+                <div class="field"><label for="f-nivel">Nível</label><input type="number" id="f-nivel" value="1" min="1"></div>
+                <div class="field">
+                  <label for="f-raca">Raça</label>
+                  <select id="f-raca">
+                    <option value="">— escolher —</option>
+                    <option value="Elfos">Elfos</option>
+                    <option value="Humanos">Humanos</option>
+                    <option value="Draconis">Draconis</option>
+                    <option value="Vampiros">Vampiros</option>
+                    <option value="Malus">Malus</option>
+                    <option value="Serafins">Serafins</option>
+                    <option value="Kitsunes">Kitsunes</option>
+                    <option value="Bestiais">Bestiais</option>
+                    <option value="Orcs">Orcs</option>
+                    <option value="Fadas">Fadas</option>
+                    <option value="Tritões">Tritões</option>
+                    <option value="Gigantes">Gigantes</option>
+                    <option value="Eidolons">Eidolons</option>
+                    <option value="Quimeras">Quimeras</option>
+                    <option value="Arcanos">Arcanos</option>
+                    <option value="Cronianos">Cronianos</option>
+                    <option value="Astralis">Astralis</option>
+                    <option value="Revenantes">Revenantes</option>
+                    <option value="Alados">Alados</option>
+                    <option value="Nagas">Nagas</option>
+                    <option value="Draconianos">Draconianos</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="f-classe">Classe</label>
+                  <select id="f-classe">
+                    <option value="">— escolher —</option>
+                    <option value="Guerreiro">Guerreiro</option>
+                    <option value="Berserker">Berserker</option>
+                    <option value="Cavaleiro">Cavaleiro</option>
+                    <option value="Espadachim">Espadachim</option>
+                    <option value="Ladino">Ladino</option>
+                    <option value="Atirador">Atirador</option>
+                    <option value="Caçador">Caçador</option>
+                    <option value="Monge">Monge</option>
+                    <option value="Paladino">Paladino</option>
+                    <option value="Clérigo">Clérigo</option>
+                    <option value="Mago">Mago</option>
+                    <option value="Feiticeiro">Feiticeiro</option>
+                    <option value="Bruxo">Bruxo</option>
+                    <option value="Invocador">Invocador</option>
+                    <option value="Alquimista">Alquimista</option>
+                    <option value="Bardo">Bardo</option>
+                    <option value="Druida">Druida</option>
+                    <option value="Necromante">Necromante</option>
+                    <option value="Arcanista">Arcanista</option>
+                    <option value="Ceifador">Ceifador</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field" id="tipo-wrap" hidden style="margin-top:0.7rem;"><label for="f-tipo">Espécie / papel (NPCs e monstros)</label><input type="text" id="f-tipo" placeholder="Ex: Goblin, Ferreiro da vila, Dragão Ancião"></div>
+              <p class="empty-note" id="raca-hint"></p>
+              <p class="empty-note" id="classe-hint"></p>
+            </div>
+            <div class="sheet-resources">
+              <div class="res-badge"><span class="res-total" id="pe-badge">0</span><span class="res-label">PE</span></div>
+              <div class="res-badge"><span class="res-total" id="pg-badge">1</span><span class="res-label">PG</span></div>
+            </div>
+          </div>
+
+          <div class="sheet-header-bottom">
+            <div class="attr-row">
+              <div class="attr-hex"><input type="number" id="attr-forca" value="0"><span class="attr-name">Força</span></div>
+              <div class="attr-hex"><input type="number" id="attr-agilidade" value="0"><span class="attr-name">Agilidade</span></div>
+              <div class="attr-hex"><input type="number" id="attr-intelecto" value="0"><span class="attr-name">Intelecto</span></div>
+              <div class="attr-hex"><input type="number" id="attr-resistencia" value="0"><span class="attr-name">Resistência</span></div>
+            </div>
+
+            <div class="vitals">
+              <div class="vital-bar vida">
+                <span class="vital-label">Vida</span>
+                <div class="bar-track"><div class="bar-fill" id="vida-bar-fill"></div></div>
+                <div class="vital-inputs"><input type="number" id="vida-atual" value="0"> / <input type="number" id="vida-max" value="0"></div>
+              </div>
+              <div class="vital-bar mana">
+                <span class="vital-label">Mana</span>
+                <div class="bar-track"><div class="bar-fill" id="mana-bar-fill"></div></div>
+                <div class="vital-inputs"><input type="number" id="mana-atual" value="0"> / <input type="number" id="mana-max" value="0"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PERÍCIAS + LATERAL ============ -->
+    <div class="sheet-body-grid">
+      <div class="sheet-col">
+        <div class="sheet-panel">
+          <h3>Perícias &amp; Testes</h3>
+          <div class="body">
+            <p class="lede" style="font-size:0.92rem; margin-top:0;">1d12 sem treino · 1d20 treinada — soma o atributo e o bônus.</p>
+            <div id="pericias-list"></div>
+            <div class="btn-row">
+              <input type="text" id="nova-pericia-nome" placeholder="Nova perícia" style="max-width:200px;">
+              <select id="nova-pericia-attr" style="max-width:150px;">
+                <option value="forca">Força</option>
+                <option value="agilidade">Agilidade</option>
+                <option value="intelecto">Intelecto</option>
+                <option value="resistencia">Resistência</option>
+              </select>
+              <button class="btn" id="add-pericia">+ Adicionar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sheet-col">
+        <div class="sheet-panel">
+          <h3>Condições Ativas</h3>
+          <div class="body"><div class="condition-grid" id="condicoes"></div></div>
+        </div>
+
+        <div class="sheet-panel">
+          <h3>Pontos de Evolução (PE)</h3>
+          <div class="body">
+            <div class="stat-card"><span class="pe-total" id="pe-total">0</span> <span style="color:var(--parchment-dim);">acumulados</span></div>
+            <div class="quick-chips">
+              <button class="chip" data-desc="Combate simples" data-val="1">Combate simples (+1)</button>
+              <button class="chip" data-desc="Combate difícil" data-val="2">Combate difícil (+2)</button>
+              <button class="chip" data-desc="Chefe de Fase" data-val="4">Chefe de Fase (+4)</button>
+              <button class="chip" data-desc="Treinamento curto" data-val="1">Treino curto (+1)</button>
+              <button class="chip" data-desc="Treinamento intenso" data-val="2">Treino intenso (+2)</button>
+              <button class="chip" data-desc="Segredo importante" data-val="1">Segredo (+1)</button>
+              <button class="chip" data-desc="Missão secundária" data-val="2">Missão secundária (+2)</button>
+              <button class="chip" data-desc="Missão principal" data-val="3">Missão principal (+3)</button>
+              <button class="chip" data-desc="Ato heroico" data-val="4">Ato heroico (+4)</button>
+              <button class="chip" data-desc="Roleplay excepcional" data-val="1">Roleplay (+1)</button>
+            </div>
+            <div class="btn-row">
+              <input type="text" id="pe-desc" placeholder="Descrição" style="max-width:170px;">
+              <input type="number" id="pe-valor" placeholder="+/-" style="max-width:90px;">
+              <button class="btn btn-gold" id="pe-add">Registrar</button>
+            </div>
+            <div class="log-list" id="pe-log"></div>
+          </div>
+        </div>
+
+        <div class="sheet-panel">
+          <h3>Pontos de Glória (PG)</h3>
+          <div class="body">
+            <div class="stat-card"><span class="pg-total" id="pg-total">1</span> <span style="color:var(--parchment-dim);">disponíveis</span></div>
+            <div class="btn-row" style="justify-content:center;">
+              <button class="btn btn-danger" id="pg-usar">Usar 1 PG</button>
+              <button class="btn" id="pg-conceder">+1 (Mestre)</button>
+            </div>
+            <p class="empty-note" style="text-align:center;">O Mestre pode optar por nunca recarregar este ponto.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ HABILIDADES + INVENTÁRIO ============ -->
+    <div class="sheet-body-grid" style="grid-template-columns:1fr; padding-top:0;">
+      <div class="sheet-panel">
+        <h3>Habilidades &amp; Talentos</h3>
+        <div class="body">
+          <div class="edit-banner" id="hab-edit-banner" hidden></div>
+          <div class="hab-form" id="hab-form">
+            <div class="field f-nome"><label>Nome</label><input type="text" id="hab-nome" placeholder="Ex: Raio que Extermina os Fracos"></div>
+            <div class="field f-mini"><label>Rank</label>
+              <select id="hab-rank"><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select>
+            </div>
+            <div class="field f-mini"><label>Custo (PE)</label><input type="number" id="hab-custo" value="0" min="0"></div>
+            <div class="field f-mini"><label>Mana</label><input type="number" id="hab-mana" value="0" min="0"></div>
+            <div class="field f-half"><label>Dano</label><input type="text" id="hab-dano" placeholder="Ex: Rank A (3d12)"></div>
+            <div class="field f-half"><label>Alcance</label><input type="text" id="hab-alcance" placeholder="Ex: Rank A (12 m)"></div>
+            <div class="field f-full"><label>Efeitos</label><textarea id="hab-efeitos" placeholder="Ex: Sangramento I, Atordoamento I, Absorver I"></textarea></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-gold" id="hab-add">+ Adicionar habilidade</button>
+            <button class="btn btn-ghost" id="hab-cancel" hidden>Cancelar edição</button>
+          </div>
+          <div class="hab-grid" id="hab-list"></div>
+        </div>
+      </div>
+
+      <div class="sheet-panel">
+        <h3>Inventário</h3>
+        <div class="body">
+          <div class="btn-row" style="margin-top:0;">
+            <input type="text" id="inv-nome" placeholder="Item" style="max-width:240px;">
+            <input type="number" id="inv-qtd" value="1" min="1" style="max-width:80px;">
+            <button class="btn btn-gold" id="inv-add">+ Adicionar</button>
+          </div>
+          <div class="inv-grid" id="inv-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ SALVAR / EXPORTAR ============ -->
+  <section class="panel" id="backup-section" style="padding-top:0.5rem;">
+    <span class="kicker">Backup</span>
+    <h2>Salvar &amp; Exportar</h2>
+    <p class="lede" style="margin-top:0.6rem;">Sua ficha é salva automaticamente neste navegador. Para levar para outro dispositivo, ou por segurança, exporte um arquivo.</p>
+    <div class="btn-row">
+      <button class="btn btn-gold" id="export-btn">⬇ Baixar ficha (JSON)</button>
+      <div class="file-input-wrap">
+        <button class="btn">⬆ Carregar ficha (JSON)</button>
+        <input type="file" id="import-input" accept="application/json">
+      </div>
+      <button class="btn btn-danger" id="reset-btn">Nova ficha (limpar tudo)</button>
+    </div>
+  </section>
+
+</div><!-- /tab-ficha -->
+
+<div id="tab-mestre" hidden>
+  <div class="sheet master-sheet">
+    <div class="master-head">
+      <span class="kicker">Painel do Mestre</span>
+      <h2>Mesa do Mestre</h2>
+      <p class="lede" style="margin-top:0.6rem;">Reúna aqui as fichas dos jogadores, NPCs, personagens do Mestre e monstros. Abra quantas quiser ao mesmo tempo e ajuste Vida, Mana e condições sem sair da tela.</p>
+    </div>
+
+    <div class="master-toolbar">
+      <div class="master-cats" id="master-cats"></div>
+      <input type="text" id="master-search" placeholder="Buscar por nome, raça, classe, jogador ou notas…">
+    </div>
+
+    <div class="master-actions">
+      <div class="master-action">
+        <select id="master-new-cat" aria-label="Categoria da nova ficha"></select>
+        <button type="button" class="btn btn-gold" id="master-new">+ Nova ficha</button>
+      </div>
+      <div class="master-action">
+        <select id="master-import-cat" aria-label="Categoria das fichas importadas"></select>
+        <div class="file-input-wrap">
+          <button type="button" class="btn">⬆ Importar fichas (JSON)</button>
+          <input type="file" id="master-import" accept="application/json,.json" multiple>
+        </div>
+      </div>
+      <div class="master-action">
+        <button type="button" class="btn btn-ghost" id="master-open-all">Abrir todas</button>
+        <button type="button" class="btn btn-ghost" id="master-close-all">Recolher todas</button>
+        <button type="button" class="btn btn-ghost" id="master-export">⬇ Backup da biblioteca</button>
+      </div>
+    </div>
+
+    <p class="master-hint">A biblioteca fica salva só neste navegador. Para trazer a ficha de um jogador, peça o arquivo JSON dele (botão “Baixar ficha”) e importe aqui; importar de novo atualiza a ficha existente.</p>
+
+    <div class="master-grid" id="master-list"></div>
+  </div>
+</div><!-- /tab-mestre -->
+
+</main>
+
+<footer>
+  <div class="divider">
+    <div class="line"></div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--brass-bright)"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+    <div class="line"></div>
+  </div>
+  Grimório RPG — ficha salva localmente neste navegador.
+</footer>
+
+<div class="save-indicator" id="save-indicator">Ficha salva</div>
+
+<script>
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var theme = params.get('tema');
+  if(theme !== 'azul' && theme !== 'branco'){ theme = 'azul'; }
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    document.querySelectorAll('.theme-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.theme === t);
+    });
+    document.querySelectorAll('nav.tabs a, .hero .cards a').forEach(function(a){
+      var href = a.getAttribute('href');
+      if(!href) return;
+      var base = href.split('?')[0];
+      a.setAttribute('href', base + '?tema=' + t);
+    });
+  }
+  applyTheme(theme);
+  document.querySelectorAll('.theme-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){ applyTheme(btn.dataset.theme); });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'grimorio_ficha_v1';
+
+  var RACA_DATA = {
+    'Elfos':       { status:'40 pontos (Vida/Mana)', bonus:{ intelecto:3, agilidade:2 }, pericias:{}, livreText:'', habilidade:'Sabedoria Ancestral' },
+    'Humanos':     { status:'50 pontos (Vida/Mana)', bonus:{}, pericias:{}, livreText:'+2 em dois atributos à escolha', habilidade:'Versatilidade' },
+    'Draconis':    { status:'60 pontos (Vida/Mana)', bonus:{ forca:3, resistencia:2 }, pericias:{}, livreText:'', habilidade:'Herança Dracônica' },
+    'Vampiros':    { status:'50 pontos (Vida/Mana)', bonus:{ agilidade:3 }, pericias:{ 'Presença':2 }, livreText:'', habilidade:'Sede de Sangue' },
+    'Malus':       { status:'70 pontos (Vida/Mana)', bonus:{ forca:4, intelecto:1 }, pericias:{}, livreText:'', habilidade:'Instinto de Sobrevivência' },
+    'Serafins':    { status:'40 pontos (Vida/Mana)', bonus:{ intelecto:2 }, pericias:{}, livreText:'', habilidade:'Bênção Celestial' },
+    'Kitsunes':    { status:'45 pontos (Vida/Mana)', bonus:{ agilidade:2 }, pericias:{ 'Presença':3 }, livreText:'', habilidade:'Ilusão Espiritual' },
+    'Bestiais':    { status:'60 pontos (Vida/Mana)', bonus:{ agilidade:3 }, pericias:{ 'Percepção':2 }, livreText:'', habilidade:'Instinto Animal' },
+    'Orcs':        { status:'75 pontos (Vida/Mana)', bonus:{ forca:3, resistencia:2 }, pericias:{}, livreText:'', habilidade:'Brutalidade Orc' },
+    'Fadas':       { status:'30 pontos (Vida/Mana)', bonus:{ intelecto:3, agilidade:2 }, pericias:{}, livreText:'', habilidade:'Pó Feérico' },
+    'Tritões':     { status:'55 pontos (Vida/Mana)', bonus:{ resistencia:3 }, pericias:{}, livreText:'', habilidade:'Filhos do Mar' },
+    'Gigantes':    { status:'90 pontos (Vida/Mana)', bonus:{ forca:5, agilidade:-1 }, pericias:{}, livreText:'', habilidade:'Força Colossal' },
+    'Eidolons':    { status:'30 pontos (Vida/Mana)', bonus:{ agilidade:2 }, pericias:{}, livreText:'', habilidade:'Forma Etérea' },
+    'Quimeras':    { status:'60 pontos (Vida/Mana)', bonus:{}, pericias:{}, livreText:'+2 em dois atributos à escolha', habilidade:'Mutação' },
+    'Arcanos':     { status:'25 Vida / 50 Mana', bonus:{ intelecto:4 }, pericias:{}, livreText:'', habilidade:'Corpo Arcano' },
+    'Cronianos':   { status:'45 pontos (Vida/Mana)', bonus:{ agilidade:3, intelecto:2 }, pericias:{}, livreText:'', habilidade:'Eco Temporal' },
+    'Astralis':    { status:'45 pontos (Vida/Mana)', bonus:{ intelecto:3 }, pericias:{}, livreText:'', habilidade:'Poeira Estelar' },
+    'Revenantes':  { status:'65 pontos (Vida/Mana)', bonus:{ resistencia:3 }, pericias:{}, livreText:'', habilidade:'Além da Morte' },
+    'Alados':      { status:'50 pontos (Vida/Mana)', bonus:{ agilidade:3 }, pericias:{ 'Percepção':2 }, livreText:'', habilidade:'Voo Natural' },
+    'Nagas':       { status:'60 pontos (Vida/Mana)', bonus:{ resistencia:3, intelecto:2 }, pericias:{}, livreText:'', habilidade:'Veneno Natural' },
+    'Draconianos': { status:'65 pontos (Vida/Mana)', bonus:{ forca:3 }, pericias:{}, livreText:'', habilidade:'Sopro Elemental' }
+  };
+  var ATTR_LABELS = { forca:'Força', agilidade:'Agilidade', intelecto:'Intelecto', resistencia:'Resistência' };
+  var ZERO_BONUS = { forca:0, agilidade:0, intelecto:0, resistencia:0 };
+
+  var CLASSE_DATA = {
+    'Guerreiro':   { arma:'Espada longa',    dano:'1d8 + FOR',  habilidade:'Golpe Poderoso', desc:'+2 de dano em um ataque por turno' },
+    'Berserker':   { arma:'Machado grande',  dano:'1d12 + FOR', habilidade:'Fúria', desc:'+2 Força por 2 turnos; depois 1 turno sem poder usar de novo' },
+    'Cavaleiro':   { arma:'Espada + escudo', dano:'1d8 + FOR',  habilidade:'Defender', desc:'recebe +2 de Defesa até o próximo turno' },
+    'Espadachim':  { arma:'Katana',          dano:'1d8 + FOR',  habilidade:'Corte Rápido', desc:'após acertar, pode recuar 2m sem provocar ataque de oportunidade' },
+    'Ladino':      { arma:'2 adagas',        dano:'1d6 + FOR',  habilidade:'Ataque Furtivo', desc:'+1d4 de dano contra inimigo que não percebeu você' },
+    'Atirador':    { arma:'Arco curto',      dano:'1d6 + AGI',  habilidade:'Mira', desc:'se não se mover no turno, recebe +2 no próximo ataque' },
+    'Caçador':     { arma:'Arco + faca',     dano:'1d6 + AGI',  habilidade:'Marcar Presa', desc:'marca uma criatura e recebe +1 contra ela' },
+    'Monge':       { arma:'Bastão',          dano:'1d6 + FOR',  habilidade:'Golpe Desarmado', desc:'pode atacar com os punhos causando 1d4 + Força' },
+    'Paladino':    { arma:'Espada + escudo', dano:'1d8 + FOR',  habilidade:'Luz Divina', desc:'cura 1d4 de um aliado próximo' },
+    'Clérigo':     { arma:'Maça',            dano:'1d8 + FOR',  habilidade:'Prece', desc:'concede +1 em um teste de um aliado' },
+    'Mago':        { arma:'Cajado',          dano:'1d6 + FOR',  habilidade:'Faísca Arcana', desc:'ataque mágico causando 1d6 + Intelecto' },
+    'Feiticeiro':  { arma:'Varinha',         dano:'1d6 + INT',  habilidade:'Magia Instintiva', desc:'reduz em 1 o custo da primeira magia do combate' },
+    'Bruxo':       { arma:'Adaga ritual',    dano:'1d6 + FOR',  habilidade:'Maldição Menor', desc:'o alvo recebe +1 de dano vindo de você por 3 turnos' },
+    'Invocador':   { arma:'Cajado',          dano:'1d6 + FOR',  habilidade:'Familiar', desc:'começa com uma pequena criatura companheira' },
+    'Alquimista':  { arma:'Adaga',           dano:'1d6 + FOR',  habilidade:'Poção Rápida', desc:'começa com 2 poções de cura 1d4' },
+    'Bardo':       { arma:'Rapieira',        dano:'1d8 + FOR',  habilidade:'Inspiração', desc:'concede +1d4 no próximo teste de um aliado' },
+    'Druida':      { arma:'Cajado',          dano:'1d6 + FOR',  habilidade:'Fala Selvagem', desc:'pode compreender e se comunicar com animais' },
+    'Necromante':  { arma:'Foice grande',    dano:'1d12 + FOR', habilidade:'Toque Fúnebre', desc:'1d4 de dano adicional contra criaturas feridas' },
+    'Arcanista':   { arma:'Cajado arcano',   dano:'1d6 + FOR',  habilidade:'Manipular Mana', desc:'altera uma propriedade pequena de uma magia' },
+    'Ceifador':    { arma:'Foice de guerra', dano:'1d12 + FOR', habilidade:'Último Suspiro', desc:'abaixo de 30% de Vida, recebe +2 de dano' }
+  };
+  var ATTR_CODE_MAP = { FOR:'forca', AGI:'agilidade', INT:'intelecto', RES:'resistencia' };
+
+  function formatBonus(bonus){
+    var parts = Object.keys(bonus).filter(function(k){ return bonus[k] !== 0; }).map(function(k){
+      var v = bonus[k];
+      return (v > 0 ? '+' : '') + v + ' ' + ATTR_LABELS[k];
+    });
+    return parts.length ? parts.join(', ') : null;
+  }
+
+  function formatPericiaBonus(pericias){
+    var parts = Object.keys(pericias).filter(function(k){ return pericias[k] !== 0; }).map(function(k){
+      var v = pericias[k];
+      return (v > 0 ? '+' : '') + v + ' ' + k + ' (perícia)';
+    });
+    return parts.length ? parts.join(', ') : null;
+  }
+
+  function applyRaceBonus(novaRaca){
+    var oldBonus = Object.assign({}, ZERO_BONUS, state.racaBonusAplicado || {});
+    Object.keys(oldBonus).forEach(function(k){ state.atributos[k] -= oldBonus[k]; });
+
+    var oldPericiaBonus = state.racaPericiaBonusAplicado || {};
+    Object.keys(oldPericiaBonus).forEach(function(nome){
+      var p = state.pericias.find(function(x){ return x.nome === nome; });
+      if(p){ p.bonus -= oldPericiaBonus[nome]; }
+    });
+
+    var data = RACA_DATA[novaRaca];
+    var newBonus = Object.assign({}, ZERO_BONUS, data ? data.bonus : {});
+    Object.keys(newBonus).forEach(function(k){ state.atributos[k] += newBonus[k]; });
+
+    var newPericiaBonus = (data && data.pericias) ? data.pericias : {};
+    Object.keys(newPericiaBonus).forEach(function(nome){
+      var p = state.pericias.find(function(x){ return x.nome === nome; });
+      if(p){ p.bonus += newPericiaBonus[nome]; }
+    });
+
+    state.racaBonusAplicado = newBonus;
+    state.racaPericiaBonusAplicado = newPericiaBonus;
+    attrKeys.forEach(function(k){ document.getElementById('attr-' + k).value = state.atributos[k]; });
+    renderPericias();
+    updateClasseHint();
+  }
+
+  var DEFAULT_PERICIAS = [
+    {nome:'Luta', attr:'forca', treinado:false, bonus:0},
+    {nome:'Reflexos', attr:'agilidade', treinado:false, bonus:0},
+    {nome:'Fortitude', attr:'resistencia', treinado:false, bonus:0},
+    {nome:'Percepção', attr:'agilidade', treinado:false, bonus:0},
+    {nome:'Presença', attr:'intelecto', treinado:false, bonus:0},
+    {nome:'Investigação', attr:'intelecto', treinado:false, bonus:0},
+    {nome:'Enganação', attr:'intelecto', treinado:false, bonus:0},
+    {nome:'Intimidação', attr:'forca', treinado:false, bonus:0},
+    {nome:'Sobrevivência', attr:'agilidade', treinado:false, bonus:0},
+    {nome:'Furtividade', attr:'agilidade', treinado:false, bonus:0},
+    {nome:'Arcana', attr:'intelecto', treinado:false, bonus:0},
+    {nome:'Persuasão', attr:'intelecto', treinado:false, bonus:0},
+    {nome:'Intuição', attr:'agilidade', treinado:false, bonus:0},
+    {nome:'Atuação', attr:'intelecto', treinado:false, bonus:0},
+    {nome:'Medicina', attr:'intelecto', treinado:false, bonus:0},
+    {nome:'História', attr:'intelecto', treinado:false, bonus:0}
+  ];
+
+  var DEFAULT_STATE = {
+    nome:'', jogador:'', nivel:1, raca:'', classe:'', tipo:'',
+    atributos:{ forca:0, agilidade:0, intelecto:0, resistencia:0 },
+    vida:{ atual:0, max:0 }, mana:{ atual:0, max:0 },
+    pericias: JSON.parse(JSON.stringify(DEFAULT_PERICIAS)),
+    pe:{ log: [] },
+    pg:{ total: 1 },
+    condicoes:{ sangramento:false, queimadura:false, envenenado:false, eletrificado:false, atordoado:false, imobilizado:false },
+    habilidades: [],
+    inventario: [],
+    retrato:{ dataUrl:null, shape:'redondo', size:'medio', zoom:100, posX:50, posY:50, ajustesConcluidos:false },
+    racaBonusAplicado:{ forca:0, agilidade:0, intelecto:0, resistencia:0 },
+    racaPericiaBonusAplicado:{}
+  };
+
+  var PORTRAIT_SIZES = {
+    redondo:  { pequeno:[120,120], medio:[170,170], grande:[220,220] },
+    quadrado: { pequeno:[120,120], medio:[170,170], grande:[220,220] },
+    retrato:  { pequeno:[130,173], medio:[180,240], grande:[220,292] }
+  };
+
+  var CONDICOES_LABELS = {
+    sangramento:'🩸 Sangramento', queimadura:'🔥 Queimadura', envenenado:'☠️ Envenenado',
+    eletrificado:'⚡ Eletrificado', atordoado:'😵 Atordoado', imobilizado:'🦵 Imobilizado'
+  };
+
+  var state = loadState();
+  var saveTimer = null;
+  var activeEntryId = null;   // quando != null, a ficha está editando uma entrada da biblioteca do Mestre
+  var mainState = null;       // guarda a ficha do próprio usuário durante a edição
+
+  function loadState(){
+    try{
+      var raw = window.localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        return Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)), parsed);
+      }
+    }catch(e){ /* localStorage indisponível — segue com estado padrão */ }
+    return JSON.parse(JSON.stringify(DEFAULT_STATE));
+  }
+
+  function saveState(){
+    if(activeEntryId){ saveActiveEntry(); return; }
+    try{
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      showSaveIndicator();
+    }catch(e){ /* silencioso: navegador pode bloquear armazenamento local */ }
+  }
+
+  function showSaveIndicator(){
+    var el = document.getElementById('save-indicator');
+    el.classList.add('show');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ el.classList.remove('show'); }, 1400);
+  }
+
+  function peTotal(){
+    return state.pe.log.reduce(function(sum, entry){ return sum + entry.valor; }, 0);
+  }
+
+  // ---------- Identidade ----------
+  var elNome = document.getElementById('f-nome');
+  var elJogador = document.getElementById('f-jogador');
+  var elNivel = document.getElementById('f-nivel');
+  var elRaca = document.getElementById('f-raca');
+  var elRacaHint = document.getElementById('raca-hint');
+  var elClasse = document.getElementById('f-classe');
+  var elClasseHint = document.getElementById('classe-hint');
+  var elTipo = document.getElementById('f-tipo');
+  elTipo.value = state.tipo || '';
+  elTipo.addEventListener('input', function(){ state.tipo = elTipo.value; saveState(); });
+
+  elNome.value = state.nome; elJogador.value = state.jogador; elNivel.value = state.nivel; elRaca.value = state.raca;
+  elClasse.value = state.classe || '';
+  updateRacaHint();
+  updateClasseHint();
+
+  elNome.addEventListener('input', function(){ state.nome = elNome.value; saveState(); });
+  elJogador.addEventListener('input', function(){ state.jogador = elJogador.value; saveState(); });
+  elNivel.addEventListener('input', function(){ state.nivel = Number(elNivel.value) || 1; saveState(); });
+  elRaca.addEventListener('change', function(){
+    state.raca = elRaca.value;
+    applyRaceBonus(state.raca);
+    updateRacaHint();
+    saveState();
+  });
+  elClasse.addEventListener('change', function(){
+    state.classe = elClasse.value;
+    updateClasseHint();
+    saveState();
+  });
+
+  function updateRacaHint(){
+    var data = RACA_DATA[state.raca];
+    if(!data){ elRacaHint.textContent = ''; return; }
+    var bonusText = formatBonus(data.bonus);
+    var periciaBonusText = formatPericiaBonus(data.pericias || {});
+    var msg = 'Status: ' + data.status + '. ';
+    if(bonusText){ msg += 'Bônus somado automaticamente aos atributos: ' + bonusText + '. '; }
+    if(periciaBonusText){ msg += 'Bônus somado automaticamente às perícias: ' + periciaBonusText + '. '; }
+    if(!bonusText && !periciaBonusText){ msg += 'Sem bônus fixo. '; }
+    if(data.livreText){ msg += data.livreText + ' — some manualmente nos atributos acima. '; }
+    msg += 'Habilidade racial: ' + data.habilidade + '.';
+    elRacaHint.textContent = msg;
+  }
+
+  function formatDano(dano){
+    var m = dano.match(/^(\d+d\d+)\s*\+\s*(FOR|AGI|INT|RES)$/);
+    if(!m) return dano;
+    var dado = m[1];
+    var attrKey = ATTR_CODE_MAP[m[2]];
+    var total = state.atributos[attrKey] || 0;
+    return dado + (total >= 0 ? ' + ' + total : ' - ' + Math.abs(total)) + ' (' + ATTR_LABELS[attrKey] + ')';
+  }
+
+  function updateClasseHint(){
+    var data = CLASSE_DATA[state.classe];
+    if(!data){ elClasseHint.textContent = ''; return; }
+    elClasseHint.textContent = 'Arma inicial: ' + data.arma + ' — Dano: ' + formatDano(data.dano) + '. Habilidade inicial — ' + data.habilidade + ': ' + data.desc + '.';
+  }
+
+
+  // ---------- Retrato do personagem ----------
+  var portraitFrame = document.getElementById('portrait-frame');
+  var portraitPlaceholder = document.getElementById('portrait-placeholder');
+  var portraitControls = document.getElementById('portrait-controls');
+  var portraitInput = document.getElementById('portrait-input');
+  var shapeSelect = document.getElementById('shape-select');
+  var sizeSelect = document.getElementById('size-select');
+  var zoomRange = document.getElementById('zoom-range');
+  var posxRange = document.getElementById('posx-range');
+  var posyRange = document.getElementById('posy-range');
+  var zoomVal = document.getElementById('zoom-val');
+  var portraitAdjust = document.getElementById('portrait-adjust');
+  var portraitEditarBtn = document.getElementById('portrait-editar');
+  var portraitProntoBtn = document.getElementById('portrait-pronto');
+
+  function renderPortrait(){
+    var r = state.retrato;
+    var dims = PORTRAIT_SIZES[r.shape][r.size];
+    portraitFrame.style.width = dims[0] + 'px';
+    portraitFrame.style.height = dims[1] + 'px';
+    portraitFrame.className = 'portrait-frame shape-' + r.shape;
+
+    if(r.dataUrl){
+      portraitFrame.style.backgroundImage = 'url(' + r.dataUrl + ')';
+      portraitFrame.style.backgroundSize = r.zoom + '%';
+      portraitFrame.style.backgroundPosition = r.posX + '% ' + r.posY + '%';
+      portraitPlaceholder.style.display = 'none';
+      portraitControls.style.display = 'flex';
+    }else{
+      portraitFrame.style.backgroundImage = 'none';
+      portraitPlaceholder.style.display = 'flex';
+      portraitControls.style.display = 'none';
+    }
+
+    shapeSelect.value = r.shape;
+    sizeSelect.value = r.size;
+    zoomRange.value = r.zoom;
+    posxRange.value = r.posX;
+    posyRange.value = r.posY;
+    zoomVal.textContent = r.zoom + '%';
+
+    if(r.ajustesConcluidos){
+      portraitAdjust.style.display = 'none';
+      portraitEditarBtn.style.display = 'block';
+    }else{
+      portraitAdjust.style.display = 'block';
+      portraitEditarBtn.style.display = 'none';
+    }
+  }
+
+  function resizeImageFile(file, maxDim, callback){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+        var cw = Math.max(1, Math.round(img.width * scale));
+        var ch = Math.max(1, Math.round(img.height * scale));
+        var canvas = document.createElement('canvas');
+        canvas.width = cw; canvas.height = ch;
+        canvas.getContext('2d').drawImage(img, 0, 0, cw, ch);
+        callback(canvas.toDataURL('image/jpeg', 0.85));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  portraitFrame.addEventListener('click', function(){
+    if(!state.retrato.dataUrl){ portraitInput.click(); }
+  });
+  document.getElementById('portrait-troca').addEventListener('click', function(){ portraitInput.click(); });
+  document.getElementById('portrait-remove').addEventListener('click', function(){
+    if(!confirm('Remover a imagem do personagem?')) return;
+    state.retrato.dataUrl = null;
+    state.retrato.ajustesConcluidos = false;
+    renderPortrait();
+    saveState();
+  });
+  portraitInput.addEventListener('change', function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    resizeImageFile(file, 600, function(dataUrl){
+      state.retrato.dataUrl = dataUrl;
+      state.retrato.ajustesConcluidos = false;
+      renderPortrait();
+      saveState();
+    });
+    e.target.value = '';
+  });
+  portraitProntoBtn.addEventListener('click', function(){
+    state.retrato.ajustesConcluidos = true;
+    renderPortrait();
+    saveState();
+  });
+  portraitEditarBtn.addEventListener('click', function(){
+    state.retrato.ajustesConcluidos = false;
+    renderPortrait();
+    saveState();
+  });
+  shapeSelect.addEventListener('change', function(){ state.retrato.shape = shapeSelect.value; renderPortrait(); saveState(); });
+  sizeSelect.addEventListener('change', function(){ state.retrato.size = sizeSelect.value; renderPortrait(); saveState(); });
+  zoomRange.addEventListener('input', function(){ state.retrato.zoom = Number(zoomRange.value); renderPortrait(); saveState(); });
+  posxRange.addEventListener('input', function(){ state.retrato.posX = Number(posxRange.value); renderPortrait(); saveState(); });
+  posyRange.addEventListener('input', function(){ state.retrato.posY = Number(posyRange.value); renderPortrait(); saveState(); });
+
+  // ---------- Atributos ----------
+  var attrKeys = ['forca','agilidade','intelecto','resistencia'];
+  attrKeys.forEach(function(k){
+    var el = document.getElementById('attr-' + k);
+    el.value = state.atributos[k];
+    el.addEventListener('input', function(){ state.atributos[k] = Number(el.value) || 0; renderPericias(); updateClasseHint(); saveState(); });
+  });
+
+  // ---------- Vida / Mana ----------
+  function updateVitalBars(){
+    var vidaPct = state.vida.max > 0 ? Math.max(0, Math.min(100, (state.vida.atual / state.vida.max) * 100)) : 0;
+    var manaPct = state.mana.max > 0 ? Math.max(0, Math.min(100, (state.mana.atual / state.mana.max) * 100)) : 0;
+    document.getElementById('vida-bar-fill').style.width = vidaPct + '%';
+    document.getElementById('mana-bar-fill').style.width = manaPct + '%';
+  }
+
+  [['vida-atual','vida','atual'],['vida-max','vida','max'],['mana-atual','mana','atual'],['mana-max','mana','max']].forEach(function(cfg){
+    var el = document.getElementById(cfg[0]);
+    el.value = state[cfg[1]][cfg[2]];
+    el.addEventListener('input', function(){
+      state[cfg[1]][cfg[2]] = Number(el.value) || 0;
+      updateVitalBars();
+      saveState();
+    });
+  });
+
+  // ---------- Perícias ----------
+  var periciasList = document.getElementById('pericias-list');
+  var attrLabel = { forca:'Força', agilidade:'Agilidade', intelecto:'Intelecto', resistencia:'Resistência' };
+
+  function formulaText(p){
+    var die = p.treinado ? 20 : 12;
+    var mod = (state.atributos[p.attr] || 0) + (p.bonus || 0);
+    return '1d' + die + (mod >= 0 ? ' + ' + mod : ' - ' + Math.abs(mod));
+  }
+
+  function renderPericias(){
+    periciasList.innerHTML = '';
+    state.pericias.forEach(function(p, idx){
+      var row = document.createElement('div');
+      row.className = 'pericia-row';
+
+      var nomeSpan = document.createElement('span');
+      nomeSpan.className = 'p-nome';
+      nomeSpan.textContent = p.nome + ' (' + attrLabel[p.attr] + ')';
+      row.appendChild(nomeSpan);
+
+      var trLabel = document.createElement('label');
+      var trInput = document.createElement('input');
+      trInput.type = 'checkbox';
+      trInput.checked = p.treinado;
+      trInput.addEventListener('change', function(){
+        p.treinado = trInput.checked;
+        formulaSpan.textContent = formulaText(p);
+        saveState();
+      });
+      trLabel.appendChild(trInput);
+      trLabel.appendChild(document.createTextNode('treinada'));
+      row.appendChild(trLabel);
+
+      var bonusInput = document.createElement('input');
+      bonusInput.type = 'number';
+      bonusInput.value = p.bonus;
+      bonusInput.title = 'Bônus extra';
+      bonusInput.addEventListener('input', function(){
+        p.bonus = Number(bonusInput.value) || 0;
+        formulaSpan.textContent = formulaText(p);
+        saveState();
+      });
+      row.appendChild(bonusInput);
+
+      var formulaSpan = document.createElement('span');
+      formulaSpan.className = 'p-formula';
+      formulaSpan.textContent = formulaText(p);
+      row.appendChild(formulaSpan);
+
+      var delBtn = document.createElement('button');
+      delBtn.className = 'remove-btn';
+      delBtn.textContent = '×';
+      delBtn.title = 'Remover perícia';
+      delBtn.addEventListener('click', function(){
+        state.pericias.splice(idx, 1);
+        renderPericias();
+        saveState();
+      });
+      row.appendChild(delBtn);
+
+      periciasList.appendChild(row);
+    });
+  }
+
+  document.getElementById('add-pericia').addEventListener('click', function(){
+    var nomeEl = document.getElementById('nova-pericia-nome');
+    var attrEl = document.getElementById('nova-pericia-attr');
+    var nome = nomeEl.value.trim();
+    if(!nome) return;
+    state.pericias.push({ nome: nome, attr: attrEl.value, treinado:false, bonus:0 });
+    nomeEl.value = '';
+    renderPericias();
+    saveState();
+  });
+
+  // ---------- PE ----------
+  function renderPe(){
+    document.getElementById('pe-total').textContent = peTotal();
+    document.getElementById('pe-badge').textContent = peTotal();
+    var log = document.getElementById('pe-log');
+    log.innerHTML = '';
+    if(state.pe.log.length === 0){
+      var empty = document.createElement('p');
+      empty.className = 'empty-note';
+      empty.textContent = 'Nenhum registro ainda.';
+      log.appendChild(empty);
+      return;
+    }
+    state.pe.log.slice().reverse().forEach(function(entry){
+      var realIdx = state.pe.log.indexOf(entry);
+      var row = document.createElement('div');
+      row.className = 'log-entry';
+      var left = document.createElement('span');
+      left.textContent = entry.desc;
+      var right = document.createElement('span');
+      right.className = 'val';
+      right.textContent = (entry.valor >= 0 ? '+' : '') + entry.valor + ' PE';
+      var del = document.createElement('button');
+      del.className = 'remove-btn';
+      del.textContent = '×';
+      del.addEventListener('click', function(){
+        state.pe.log.splice(realIdx, 1);
+        renderPe();
+        saveState();
+      });
+      row.appendChild(left);
+      var right2 = document.createElement('div');
+      right2.style.display = 'flex'; right2.style.alignItems = 'center'; right2.style.gap = '0.6rem';
+      right2.appendChild(right); right2.appendChild(del);
+      row.appendChild(right2);
+      log.appendChild(row);
+    });
+  }
+
+  document.getElementById('pe-add').addEventListener('click', function(){
+    var descEl = document.getElementById('pe-desc');
+    var valEl = document.getElementById('pe-valor');
+    var desc = descEl.value.trim() || 'Registro';
+    var val = Number(valEl.value);
+    if(!val) return;
+    state.pe.log.push({ desc: desc, valor: val });
+    descEl.value = ''; valEl.value = '';
+    renderPe();
+    saveState();
+  });
+
+  document.querySelectorAll('.chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      state.pe.log.push({ desc: chip.dataset.desc, valor: Number(chip.dataset.val) });
+      renderPe();
+      saveState();
+    });
+  });
+
+  // ---------- PG ----------
+  function renderPg(){
+    document.getElementById('pg-total').textContent = state.pg.total;
+    document.getElementById('pg-badge').textContent = state.pg.total;
+  }
+  document.getElementById('pg-usar').addEventListener('click', function(){
+    if(state.pg.total <= 0) return;
+    state.pg.total -= 1;
+    renderPg(); saveState();
+  });
+  document.getElementById('pg-conceder').addEventListener('click', function(){
+    state.pg.total += 1;
+    renderPg(); saveState();
+  });
+
+  // ---------- Condições ----------
+  function renderCondicoes(){
+    var wrap = document.getElementById('condicoes');
+    wrap.innerHTML = '';
+    Object.keys(CONDICOES_LABELS).forEach(function(key){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'condition-chip' + (state.condicoes[key] ? ' active' : '');
+      btn.textContent = CONDICOES_LABELS[key];
+      btn.addEventListener('click', function(){
+        state.condicoes[key] = !state.condicoes[key];
+        renderCondicoes();
+        saveState();
+      });
+      wrap.appendChild(btn);
+    });
+  }
+
+  // ---------- helpers ----------
+  function mk(tag, cls, text){
+    var e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  // ---------- Habilidades ----------
+  var editingHab = null;
+  var habEls = {
+    nome: document.getElementById('hab-nome'),
+    rank: document.getElementById('hab-rank'),
+    custo: document.getElementById('hab-custo'),
+    mana: document.getElementById('hab-mana'),
+    dano: document.getElementById('hab-dano'),
+    alcance: document.getElementById('hab-alcance'),
+    efeitos: document.getElementById('hab-efeitos')
+  };
+  var habAddBtn = document.getElementById('hab-add');
+  var habCancelBtn = document.getElementById('hab-cancel');
+  var habBanner = document.getElementById('hab-edit-banner');
+
+  // fichas antigas guardavam só "desc": migra para "efeitos"
+  function normHab(h){
+    if(h.efeitos === undefined){ h.efeitos = h.desc || ''; }
+    delete h.desc;
+    h.dano = h.dano || '';
+    h.alcance = h.alcance || '';
+    h.mana = Number(h.mana) || 0;
+    h.custo = Number(h.custo) || 0;
+    return h;
+  }
+
+  function clearHabForm(){
+    habEls.nome.value = ''; habEls.rank.value = 'A';
+    habEls.custo.value = 0; habEls.mana.value = 0;
+    habEls.dano.value = ''; habEls.alcance.value = ''; habEls.efeitos.value = '';
+  }
+
+  function exitHabEdit(){
+    editingHab = null;
+    clearHabForm();
+    habAddBtn.textContent = '+ Adicionar habilidade';
+    habCancelBtn.hidden = true;
+    habBanner.hidden = true;
+  }
+
+  function startHabEdit(idx){
+    var h = normHab(state.habilidades[idx]);
+    editingHab = idx;
+    habEls.nome.value = h.nome; habEls.rank.value = h.rank;
+    habEls.custo.value = h.custo; habEls.mana.value = h.mana;
+    habEls.dano.value = h.dano; habEls.alcance.value = h.alcance; habEls.efeitos.value = h.efeitos;
+    habAddBtn.textContent = 'Salvar alterações';
+    habCancelBtn.hidden = false;
+    habBanner.textContent = 'Editando: ' + h.nome;
+    habBanner.hidden = false;
+    renderHabilidades();
+    habEls.nome.scrollIntoView({ behavior:'smooth', block:'center' });
+    habEls.nome.focus();
+  }
+
+  function habStat(label, value, wide){
+    var box = mk('div', 'hab-stat' + (wide ? ' wide' : ''));
+    box.appendChild(mk('span', 'lbl', label));
+    box.appendChild(mk('span', value ? 'val' : 'val none', value || '—'));
+    return box;
+  }
+
+  function habCost(label, value, cls){
+    var chip = mk('span', 'hab-cost' + (cls ? ' ' + cls : ''));
+    chip.appendChild(document.createTextNode(label + ' '));
+    chip.appendChild(mk('b', null, String(value)));
+    return chip;
+  }
+
+  function renderHabilidades(){
+    var list = document.getElementById('hab-list');
+    list.innerHTML = '';
+    if(state.habilidades.length === 0){
+      list.appendChild(mk('p', 'empty-note', 'Nenhuma habilidade adicionada ainda.'));
+      return;
+    }
+    state.habilidades.forEach(function(raw, idx){
+      var h = normHab(raw);
+      var card = mk('div', 'hab-card' + (editingHab === idx ? ' editing' : ''));
+
+      var head = mk('div', 'hab-head');
+      var title = mk('div', 'hab-title');
+      title.appendChild(mk('span', 'hab-rank', h.rank));
+      title.appendChild(mk('span', 'hab-name', h.nome));
+      var actions = mk('div', 'hab-actions');
+      var edit = mk('button', 'remove-btn edit-btn', '✎');
+      edit.type = 'button'; edit.title = 'Editar';
+      edit.addEventListener('click', function(){ startHabEdit(idx); });
+      var del = mk('button', 'remove-btn', '×');
+      del.type = 'button'; del.title = 'Remover';
+      del.addEventListener('click', function(){
+        if(editingHab !== null) exitHabEdit();
+        state.habilidades.splice(idx, 1);
+        renderHabilidades();
+        saveState();
+      });
+      actions.appendChild(edit); actions.appendChild(del);
+      head.appendChild(title); head.appendChild(actions);
+
+      var costs = mk('div', 'hab-costs');
+      costs.appendChild(habCost('PE', h.custo));
+      costs.appendChild(habCost('Mana', h.mana, 'mana'));
+
+      var stats = mk('div', 'hab-stats');
+      stats.appendChild(habStat('Dano', h.dano));
+      stats.appendChild(habStat('Alcance', h.alcance));
+      stats.appendChild(habStat('Efeitos', h.efeitos, true));
+
+      card.appendChild(head); card.appendChild(costs); card.appendChild(stats);
+      list.appendChild(card);
+    });
+  }
+
+  habAddBtn.addEventListener('click', function(){
+    var nome = habEls.nome.value.trim();
+    if(!nome) return;
+    var dados = {
+      nome: nome,
+      rank: habEls.rank.value,
+      custo: Number(habEls.custo.value) || 0,
+      mana: Number(habEls.mana.value) || 0,
+      dano: habEls.dano.value.trim(),
+      alcance: habEls.alcance.value.trim(),
+      efeitos: habEls.efeitos.value.trim()
+    };
+    if(editingHab !== null && state.habilidades[editingHab]){
+      state.habilidades[editingHab] = dados;
+    } else {
+      state.habilidades.push(dados);
+    }
+    exitHabEdit();
+    renderHabilidades();
+    saveState();
+  });
+
+  habCancelBtn.addEventListener('click', function(){
+    exitHabEdit();
+    renderHabilidades();
+  });
+
+  // ---------- Inventário ----------
+  function setQtd(idx, valor){
+    var n = Math.floor(Number(valor));
+    if(!isFinite(n) || n < 0) n = 0;
+    state.inventario[idx].qtd = n;
+    renderInventario();
+    saveState();
+  }
+
+  function renderInventario(){
+    var list = document.getElementById('inv-list');
+    list.innerHTML = '';
+    if(state.inventario.length === 0){
+      list.appendChild(mk('p', 'empty-note', 'Inventário vazio.'));
+      return;
+    }
+    state.inventario.forEach(function(item, idx){
+      var row = mk('div', 'inv-item' + (Number(item.qtd) === 0 ? ' zero' : ''));
+      row.appendChild(mk('span', 'inv-name', item.nome));
+
+      var ctrl = mk('div', 'inv-ctrl');
+      var minus = mk('button', 'qty-btn', '−');
+      minus.type = 'button'; minus.title = 'Diminuir';
+      minus.addEventListener('click', function(){ setQtd(idx, (Number(item.qtd) || 0) - 1); });
+      var input = document.createElement('input');
+      input.type = 'number'; input.min = '0'; input.value = item.qtd;
+      input.setAttribute('aria-label', 'Quantidade de ' + item.nome);
+      input.addEventListener('change', function(){ setQtd(idx, input.value); });
+      var plus = mk('button', 'qty-btn', '+');
+      plus.type = 'button'; plus.title = 'Aumentar';
+      plus.addEventListener('click', function(){ setQtd(idx, (Number(item.qtd) || 0) + 1); });
+      var del = mk('button', 'remove-btn', '×');
+      del.type = 'button'; del.title = 'Remover item';
+      del.addEventListener('click', function(){
+        state.inventario.splice(idx, 1);
+        renderInventario();
+        saveState();
+      });
+      ctrl.appendChild(minus); ctrl.appendChild(input); ctrl.appendChild(plus); ctrl.appendChild(del);
+      row.appendChild(ctrl);
+      list.appendChild(row);
+    });
+  }
+
+  document.getElementById('inv-add').addEventListener('click', function(){
+    var nomeEl = document.getElementById('inv-nome');
+    var qtdEl = document.getElementById('inv-qtd');
+    var nome = nomeEl.value.trim();
+    if(!nome) return;
+    state.inventario.push({ nome: nome, qtd: Math.max(0, Math.floor(Number(qtdEl.value))) || 1 });
+    nomeEl.value = ''; qtdEl.value = 1;
+    renderInventario();
+    saveState();
+  });
+
+  // ---------- Exportar / Importar / Resetar ----------
+  document.getElementById('export-btn').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    var filename = (state.nome || 'personagem').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-grimorio.json';
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('import-input').addEventListener('change', function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      try{
+        var parsed = JSON.parse(ev.target.result);
+        state = Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)), parsed);
+        exitHabEdit();
+        renderAll();
+        saveState();
+      }catch(err){
+        alert('Não foi possível ler este arquivo. Confira se é um JSON exportado desta ficha.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function(){
+    if(!confirm('Isso vai apagar todos os dados desta ficha neste navegador. Deseja continuar?')) return;
+    state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    exitHabEdit();
+    renderAll();
+    saveState();
+  });
+
+  function renderAll(){
+    elNome.value = state.nome; elJogador.value = state.jogador; elNivel.value = state.nivel; elRaca.value = state.raca;
+    elClasse.value = state.classe || '';
+    elTipo.value = state.tipo || '';
+    document.getElementById('tipo-wrap').hidden = !activeEntryId;
+    updateRacaHint();
+    updateClasseHint();
+    renderPortrait();
+    attrKeys.forEach(function(k){ document.getElementById('attr-' + k).value = state.atributos[k]; });
+    document.getElementById('vida-atual').value = state.vida.atual;
+    document.getElementById('vida-max').value = state.vida.max;
+    document.getElementById('mana-atual').value = state.mana.atual;
+    document.getElementById('mana-max').value = state.mana.max;
+    updateVitalBars();
+    renderPericias();
+    renderPe();
+    renderPg();
+    renderCondicoes();
+    renderHabilidades();
+    renderInventario();
+  }
+
+  // ================= ABA DO MESTRE =================
+  var LIB_KEY = 'grimorio_mestre_v1';
+  var CATS = [
+    { id:'jogador', label:'Jogadores',             one:'Jogador',              icon:'🧙' },
+    { id:'npc',     label:'NPCs',                  one:'NPC',                  icon:'🧑' },
+    { id:'mestre',  label:'Personagens do Mestre', one:'Personagem do Mestre', icon:'👑' },
+    { id:'monstro', label:'Monstros',              one:'Monstro',              icon:'🐲' }
+  ];
+  var ATTR_ABBR = { forca:'FOR', agilidade:'AGI', intelecto:'INT', resistencia:'RES' };
+
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  function newId(){ return 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function catInfo(id){
+    for(var i = 0; i < CATS.length; i++){ if(CATS[i].id === id) return CATS[i]; }
+    return CATS[1];
+  }
+
+  // garante todos os campos, mesmo em fichas importadas incompletas
+  function fullData(d){
+    var s = Object.assign(clone(DEFAULT_STATE), (d && typeof d === 'object') ? d : {});
+    s.atributos = Object.assign({ forca:0, agilidade:0, intelecto:0, resistencia:0 }, s.atributos);
+    s.vida = Object.assign({ atual:0, max:0 }, s.vida);
+    s.mana = Object.assign({ atual:0, max:0 }, s.mana);
+    s.condicoes = Object.assign(clone(DEFAULT_STATE.condicoes), s.condicoes);
+    s.pe = (s.pe && Array.isArray(s.pe.log)) ? s.pe : { log: [] };
+    s.pg = (s.pg && typeof s.pg === 'object') ? s.pg : { total: 1 };
+    s.retrato = Object.assign(clone(DEFAULT_STATE.retrato), s.retrato);
+    if(!Array.isArray(s.pericias)) s.pericias = clone(DEFAULT_PERICIAS);
+    if(!Array.isArray(s.habilidades)) s.habilidades = [];
+    if(!Array.isArray(s.inventario)) s.inventario = [];
+    return s;
+  }
+
+  function loadLib(){
+    try{
+      var raw = window.localStorage.getItem(LIB_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        if(parsed && Array.isArray(parsed.entries)){
+          parsed.entries.forEach(function(e){ e.data = fullData(e.data); e.notas = e.notas || ''; });
+          return parsed;
+        }
+      }
+    }catch(err){ /* biblioteca ilegível: começa vazia */ }
+    return { entries: [] };
+  }
+  var lib = loadLib();
+  var libWarned = false;
+  var openIds = {};
+  var filtroCat = 'todos';
+  var busca = '';
+
+  function saveLib(){
+    try{
+      window.localStorage.setItem(LIB_KEY, JSON.stringify(lib));
+      showSaveIndicator();
+    }catch(err){
+      if(!libWarned){
+        libWarned = true;
+        alert('Não foi possível salvar a biblioteca: o armazenamento do navegador está cheio ou bloqueado. Baixe um backup e considere remover fotos pesadas.');
+      }
+    }
+  }
+  function findEntry(id){
+    for(var i = 0; i < lib.entries.length; i++){ if(lib.entries[i].id === id) return lib.entries[i]; }
+    return null;
+  }
+  function saveActiveEntry(){
+    var e = findEntry(activeEntryId);
+    if(e){ e.data = state; e.updatedAt = Date.now(); saveLib(); }
+  }
+  function addEntry(cat, data){
+    var e = { id:newId(), categoria:cat, notas:'', updatedAt:Date.now(), data:fullData(data) };
+    lib.entries.push(e);
+    return e;
+  }
+
+  // ---------- abas ----------
+  var tabFicha = document.getElementById('tab-ficha');
+  var tabMestre = document.getElementById('tab-mestre');
+  var tabBtnFicha = document.getElementById('tabbtn-ficha');
+  var tabBtnMestre = document.getElementById('tabbtn-mestre');
+  var mainWrap = document.getElementById('main-wrap');
+  var entryBanner = document.getElementById('entry-banner');
+  var backupSection = document.getElementById('backup-section');
+
+  function showTab(name){
+    var m = (name === 'mestre');
+    tabFicha.hidden = m;
+    tabMestre.hidden = !m;
+    tabBtnFicha.classList.toggle('active', !m);
+    tabBtnMestre.classList.toggle('active', m);
+    mainWrap.classList.toggle('wide', m);
+    if(m) renderMestre();
+  }
+  function exitEditMode(){
+    if(!activeEntryId) return;
+    state = mainState;
+    mainState = null;
+    activeEntryId = null;
+    entryBanner.hidden = true;
+    backupSection.hidden = false;
+    renderAll();
+  }
+  function switchTab(name){
+    exitEditMode();
+    showTab(name);
+    window.scrollTo({ top: 0 });
+  }
+  function startEdit(id){
+    var e = findEntry(id);
+    if(!e) return;
+    exitEditMode();
+    mainState = state;
+    activeEntryId = id;
+    state = e.data;
+    document.getElementById('entry-banner-name').textContent = (e.data.nome || 'Sem nome') + ' (' + catInfo(e.categoria).one + ')';
+    document.getElementById('entry-cat').value = e.categoria;
+    entryBanner.hidden = false;
+    backupSection.hidden = true;
+    showTab('ficha');
+    renderAll();
+    window.scrollTo({ top: 0 });
+  }
+
+  tabBtnFicha.addEventListener('click', function(){ switchTab('ficha'); });
+  tabBtnMestre.addEventListener('click', function(){ switchTab('mestre'); });
+  document.getElementById('entry-done').addEventListener('click', function(){ switchTab('mestre'); });
+
+  [document.getElementById('entry-cat'), document.getElementById('master-new-cat'), document.getElementById('master-import-cat')].forEach(function(sel){
+    CATS.forEach(function(c){
+      var o = document.createElement('option');
+      o.value = c.id; o.textContent = c.one;
+      sel.appendChild(o);
+    });
+  });
+  document.getElementById('master-new-cat').value = 'npc';
+  document.getElementById('master-import-cat').value = 'jogador';
+  document.getElementById('entry-cat').addEventListener('change', function(){
+    var e = findEntry(activeEntryId);
+    if(e){
+      e.categoria = this.value;
+      document.getElementById('entry-banner-name').textContent = (e.data.nome || 'Sem nome') + ' (' + catInfo(e.categoria).one + ')';
+      saveLib();
+    }
+  });
+
+  // ---------- cartões ----------
+  function vitalRow(e, key, label, card){
+    var v = e.data[key];
+    var row = mk('div', 'vital-bar ' + (key === 'vida' ? 'vida' : 'mana'));
+    row.appendChild(mk('span', 'vital-label', label));
+    var track = mk('div', 'bar-track');
+    var fill = mk('div', 'bar-fill');
+    track.appendChild(fill);
+    row.appendChild(track);
+
+    var ctrl = mk('div', 'vital-inputs');
+    var minus = mk('button', 'qty-btn', '−'); minus.type = 'button'; minus.title = 'Diminuir 1';
+    var input = document.createElement('input'); input.type = 'number'; input.min = '0'; input.value = v.atual;
+    input.setAttribute('aria-label', label + ' atual de ' + (e.data.nome || 'sem nome'));
+    var plus = mk('button', 'qty-btn', '+'); plus.type = 'button'; plus.title = 'Aumentar 1';
+    ctrl.appendChild(minus); ctrl.appendChild(input); ctrl.appendChild(plus);
+    ctrl.appendChild(document.createTextNode(' / ' + v.max));
+    row.appendChild(ctrl);
+
+    function paint(){
+      var pct = v.max > 0 ? Math.max(0, Math.min(100, (v.atual / v.max) * 100)) : 0;
+      fill.style.width = pct + '%';
+      if(key === 'vida') card.classList.toggle('down', v.max > 0 && v.atual <= 0);
+    }
+    function apply(n){
+      n = Math.floor(Number(n));
+      if(!isFinite(n) || n < 0) n = 0;
+      v.atual = n; input.value = n;
+      paint();
+      e.updatedAt = Date.now();
+      saveLib();
+    }
+    minus.addEventListener('click', function(){ apply((Number(v.atual) || 0) - 1); });
+    plus.addEventListener('click', function(){ apply((Number(v.atual) || 0) + 1); });
+    input.addEventListener('change', function(){ apply(input.value); });
+    paint();
+    return row;
+  }
+
+  function formulaFor(d, p){
+    var die = p.treinado ? 20 : 12;
+    var mod = (d.atributos[p.attr] || 0) + (Number(p.bonus) || 0);
+    return '1d' + die + (mod >= 0 ? ' + ' + mod : ' − ' + Math.abs(mod));
+  }
+
+  function buildHabView(raw){
+    var h = normHab(raw);
+    var card = mk('div', 'hab-card');
+    var head = mk('div', 'hab-head');
+    var title = mk('div', 'hab-title');
+    title.appendChild(mk('span', 'hab-rank', h.rank));
+    title.appendChild(mk('span', 'hab-name', h.nome));
+    head.appendChild(title);
+    var costs = mk('div', 'hab-costs');
+    costs.appendChild(habCost('PE', h.custo));
+    costs.appendChild(habCost('Mana', h.mana, 'mana'));
+    var stats = mk('div', 'hab-stats');
+    stats.appendChild(habStat('Dano', h.dano));
+    stats.appendChild(habStat('Alcance', h.alcance));
+    stats.appendChild(habStat('Efeitos', h.efeitos, true));
+    card.appendChild(head); card.appendChild(costs); card.appendChild(stats);
+    return card;
+  }
+
+  function section(title){
+    var s = mk('div', 'm-section');
+    if(title) s.appendChild(mk('h4', null, title));
+    return s;
+  }
+
+  function buildDetail(e, card){
+    var d = e.data;
+    var det = mk('div', 'm-detail');
+
+    // condições (clicáveis)
+    var sc = section('Condições');
+    var grid = mk('div', 'condition-grid');
+    Object.keys(CONDICOES_LABELS).forEach(function(key){
+      var b = mk('button', 'condition-chip' + (d.condicoes[key] ? ' active' : ''), CONDICOES_LABELS[key]);
+      b.type = 'button';
+      b.addEventListener('click', function(){
+        d.condicoes[key] = !d.condicoes[key];
+        e.updatedAt = Date.now();
+        saveLib();
+        refreshCard(e, card);
+      });
+      grid.appendChild(b);
+    });
+    sc.appendChild(grid);
+    det.appendChild(sc);
+
+    // habilidades
+    var sh = section('Habilidades & Talentos (' + d.habilidades.length + ')');
+    if(d.habilidades.length === 0){
+      sh.appendChild(mk('p', 'm-none', 'Nenhuma habilidade cadastrada.'));
+    } else {
+      var hg = mk('div', 'hab-grid');
+      d.habilidades.forEach(function(h){ hg.appendChild(buildHabView(h)); });
+      sh.appendChild(hg);
+    }
+    det.appendChild(sh);
+
+    // inventário
+    var si = section('Inventário');
+    if(d.inventario.length === 0){
+      si.appendChild(mk('p', 'm-none', 'Inventário vazio.'));
+    } else {
+      var inv = mk('div', 'm-inv');
+      d.inventario.forEach(function(it){
+        var chip = mk('span', null, it.nome + ' ');
+        chip.appendChild(mk('b', null, '×' + it.qtd));
+        inv.appendChild(chip);
+      });
+      si.appendChild(inv);
+    }
+    det.appendChild(si);
+
+    // perícias
+    var trein = d.pericias.filter(function(p){ return p.treinado; }).length;
+    var dt = document.createElement('details');
+    dt.className = 'm-section m-det';
+    dt.appendChild(mk('summary', null, 'Perícias (' + trein + ' treinadas)'));
+    var pg = mk('div', 'm-pericias');
+    d.pericias.forEach(function(p){
+      var line = mk('div', p.treinado ? 'tr' : '', p.nome + ' · ');
+      line.appendChild(mk('span', 'f', formulaFor(d, p)));
+      pg.appendChild(line);
+    });
+    dt.appendChild(pg);
+    det.appendChild(dt);
+
+    // notas do mestre
+    var sn = section('Notas do Mestre');
+    var ta = document.createElement('textarea');
+    ta.placeholder = 'Motivações, segredos, táticas, ganchos de história…';
+    ta.value = e.notas || '';
+    var notaTimer = null;
+    ta.addEventListener('input', function(){
+      e.notas = ta.value;
+      clearTimeout(notaTimer);
+      notaTimer = setTimeout(function(){ e.updatedAt = Date.now(); saveLib(); }, 400);
+    });
+    sn.appendChild(ta);
+    det.appendChild(sn);
+
+    var row = mk('div', 'btn-row');
+    row.style.marginTop = '0';
+    var edit = mk('button', 'btn btn-gold', '✎ Editar ficha completa');
+    edit.type = 'button';
+    edit.addEventListener('click', function(){ startEdit(e.id); });
+    row.appendChild(edit);
+    det.appendChild(row);
+    return det;
+  }
+
+  function refreshCard(e, card){
+    var fresh = buildEntryCard(e);
+    card.replaceWith(fresh);
+  }
+
+  function buildEntryCard(e){
+    var d = e.data;
+    var open = !!openIds[e.id];
+    var cat = catInfo(e.categoria);
+    var card = mk('div', 'm-card' + (open ? ' open' : ''));
+    card.setAttribute('data-cat', e.categoria);
+
+    var top = mk('div', 'm-top');
+    var av = mk('div', 'm-avatar');
+    if(d.retrato && d.retrato.dataUrl){
+      var img = document.createElement('img');
+      img.alt = ''; img.src = d.retrato.dataUrl;
+      av.appendChild(img);
+    } else {
+      av.textContent = ((d.nome || '?').trim().charAt(0) || '?').toUpperCase();
+    }
+    var idc = mk('div', 'm-id');
+    idc.appendChild(mk('div', 'm-name', d.nome || 'Sem nome'));
+    var sub = ['Nv ' + d.nivel, d.tipo, d.raca, d.classe].filter(Boolean).join(' · ');
+    idc.appendChild(mk('div', 'm-sub', sub));
+    var badgeText = cat.one + ((e.categoria === 'jogador' && d.jogador) ? ' · ' + d.jogador : '');
+    idc.appendChild(mk('span', 'm-badge', badgeText));
+
+    var acts = mk('div', 'm-actions');
+    var tog = mk('button', 'remove-btn', open ? '▴' : '▾');
+    tog.type = 'button'; tog.title = open ? 'Recolher' : 'Abrir ficha';
+    tog.addEventListener('click', function(){
+      openIds[e.id] = !openIds[e.id];
+      refreshCard(e, card);
+    });
+    var ed = mk('button', 'remove-btn', '✎');
+    ed.type = 'button'; ed.title = 'Editar na ficha';
+    ed.addEventListener('click', function(){ startEdit(e.id); });
+    var dup = mk('button', 'remove-btn', '⧉');
+    dup.type = 'button'; dup.title = 'Duplicar';
+    dup.addEventListener('click', function(){
+      var copy = { id:newId(), categoria:e.categoria, notas:e.notas || '', updatedAt:Date.now(), data:fullData(clone(e.data)) };
+      copy.data.nome = (d.nome || 'Sem nome') + ' (cópia)';
+      lib.entries.splice(lib.entries.indexOf(e) + 1, 0, copy);
+      saveLib();
+      renderMestre();
+    });
+    var del = mk('button', 'remove-btn danger', '×');
+    del.type = 'button'; del.title = 'Remover da biblioteca';
+    del.addEventListener('click', function(){
+      if(card.querySelector('.m-confirm-row')) return;
+      var cr = mk('div', 'm-confirm-row');
+      cr.appendChild(mk('span', 'm-confirm-text', 'Excluir "' + (d.nome || 'Sem nome') + '" da biblioteca?'));
+      var sim = mk('button', 'btn btn-danger m-mini', 'Sim, excluir'); sim.type = 'button';
+      var nao = mk('button', 'btn btn-ghost m-mini', 'Cancelar'); nao.type = 'button';
+      sim.addEventListener('click', function(){
+        var i = lib.entries.indexOf(e);
+        if(i !== -1) lib.entries.splice(i, 1);
+        delete openIds[e.id];
+        saveLib();
+        renderMestre();
+      });
+      nao.addEventListener('click', function(){ cr.remove(); });
+      cr.appendChild(sim); cr.appendChild(nao);
+      top.insertAdjacentElement('afterend', cr);
+    });
+    acts.appendChild(tog); acts.appendChild(ed); acts.appendChild(dup); acts.appendChild(del);
+
+    top.appendChild(av); top.appendChild(idc); top.appendChild(acts);
+    card.appendChild(top);
+
+    var attrs = mk('div', 'm-attrs');
+    Object.keys(ATTR_ABBR).forEach(function(k){
+      var box = mk('div', 'm-attr');
+      box.appendChild(mk('span', 'n', String(d.atributos[k])));
+      box.appendChild(mk('span', 'l', ATTR_ABBR[k]));
+      attrs.appendChild(box);
+    });
+    card.appendChild(attrs);
+
+    var vit = mk('div', 'm-vitals');
+    vit.appendChild(vitalRow(e, 'vida', 'Vida', card));
+    vit.appendChild(vitalRow(e, 'mana', 'Mana', card));
+    card.appendChild(vit);
+
+    var ativas = Object.keys(CONDICOES_LABELS).filter(function(k){ return d.condicoes[k]; });
+    if(ativas.length && !open){
+      var cw = mk('div', 'm-conds');
+      ativas.forEach(function(k){ cw.appendChild(mk('span', 'm-cond', CONDICOES_LABELS[k])); });
+      card.appendChild(cw);
+    }
+
+    if(open) card.appendChild(buildDetail(e, card));
+    return card;
+  }
+
+  function renderMestre(){
+    var catsEl = document.getElementById('master-cats');
+    catsEl.innerHTML = '';
+    [{ id:'todos', label:'Todos', icon:'✦' }].concat(CATS).forEach(function(c){
+      var n = c.id === 'todos' ? lib.entries.length : lib.entries.filter(function(e){ return e.categoria === c.id; }).length;
+      var b = mk('button', 'condition-chip master-chip' + (filtroCat === c.id ? ' active' : ''), c.icon + ' ' + c.label + ' (' + n + ')');
+      b.type = 'button';
+      b.addEventListener('click', function(){ filtroCat = c.id; renderMestre(); });
+      catsEl.appendChild(b);
+    });
+
+    var list = document.getElementById('master-list');
+    list.innerHTML = '';
+    var q = busca.trim().toLowerCase();
+    var items = lib.entries.filter(function(e){
+      if(filtroCat !== 'todos' && e.categoria !== filtroCat) return false;
+      if(!q) return true;
+      var d = e.data;
+      return [d.nome, d.jogador, d.raca, d.classe, d.tipo, e.notas].join(' ').toLowerCase().indexOf(q) !== -1;
+    });
+    var order = {};
+    CATS.forEach(function(c, i){ order[c.id] = i; });
+    items.sort(function(a, b){
+      var ca = order[a.categoria] || 0, cb = order[b.categoria] || 0;
+      if(ca !== cb) return ca - cb;
+      return (a.data.nome || '').localeCompare(b.data.nome || '', 'pt-BR');
+    });
+
+    if(items.length === 0){
+      list.appendChild(mk('p', 'empty-note', lib.entries.length === 0
+        ? 'A biblioteca está vazia. Crie uma nova ficha ou importe o JSON de um jogador.'
+        : 'Nenhuma ficha encontrada com esse filtro.'));
+      return;
+    }
+    items.forEach(function(e){ list.appendChild(buildEntryCard(e)); });
+    list.dataset.visible = items.map(function(e){ return e.id; }).join(',');
+  }
+
+  // ---------- ações da barra ----------
+  document.getElementById('master-search').addEventListener('input', function(){
+    busca = this.value;
+    renderMestre();
+  });
+
+  document.getElementById('master-new').addEventListener('click', function(){
+    var e = addEntry(document.getElementById('master-new-cat').value, {});
+    saveLib();
+    startEdit(e.id);
+  });
+
+  document.getElementById('master-open-all').addEventListener('click', function(){
+    var ids = (document.getElementById('master-list').dataset.visible || '').split(',').filter(Boolean);
+    ids.forEach(function(id){ openIds[id] = true; });
+    renderMestre();
+  });
+  document.getElementById('master-close-all').addEventListener('click', function(){
+    openIds = {};
+    renderMestre();
+  });
+
+  document.getElementById('master-export').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify({ grimorio_mestre:1, entries:lib.entries }, null, 2)], { type:'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'biblioteca-do-mestre.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  function importSheet(parsed, cat){
+    var nome = (parsed.nome || '').trim();
+    var jogador = (parsed.jogador || '').trim();
+    var existente = null;
+    if(nome){
+      lib.entries.forEach(function(e){
+        if(!existente && e.categoria === cat && (e.data.nome || '').trim() === nome && (e.data.jogador || '').trim() === jogador) existente = e;
+      });
+    }
+    if(existente){
+      existente.data = fullData(parsed);
+      existente.updatedAt = Date.now();
+    } else {
+      addEntry(cat, parsed);
+    }
+  }
+  function importLibrary(parsed){
+    parsed.entries.forEach(function(inc){
+      if(!inc || !inc.data) return;
+      var cat = catInfo(inc.categoria).id;
+      var atual = inc.id ? findEntry(inc.id) : null;
+      var dados = fullData(inc.data);
+      if(atual){
+        atual.categoria = cat; atual.data = dados; atual.notas = inc.notas || atual.notas || ''; atual.updatedAt = Date.now();
+      } else {
+        lib.entries.push({ id: inc.id || newId(), categoria:cat, notas:inc.notas || '', updatedAt:Date.now(), data:dados });
+      }
+    });
+  }
+
+  document.getElementById('master-import').addEventListener('change', function(ev){
+    var cat = document.getElementById('master-import-cat').value;
+    var files = ev.target.files;
+    Array.prototype.forEach.call(files, function(file){
+      var reader = new FileReader();
+      reader.onload = function(e2){
+        try{
+          var parsed = JSON.parse(e2.target.result);
+          if(parsed && Array.isArray(parsed.entries)){ importLibrary(parsed); }
+          else if(parsed && typeof parsed === 'object' && parsed.atributos){ importSheet(parsed, cat); }
+          else { throw new Error('formato'); }
+          saveLib();
+          renderMestre();
+        }catch(err){
+          alert('Não foi possível ler "' + file.name + '". Confira se é um JSON baixado da ficha ou do backup da biblioteca.');
+        }
+      };
+      reader.readAsText(file);
+    });
+    ev.target.value = '';
+  });
+
+
+  renderAll();
+})();
+</script>
+
+</body>
+</html>

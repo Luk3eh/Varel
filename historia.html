@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>História — Varel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="azul"]{
+  --void:#0A1220;
+  --void-2:#0F1B2E;
+  --panel:#132540;
+  --parchment:#E8E1CB;
+  --parchment-dim:#9FB0CF;
+  --parchment-faint:#67759A;
+  --brass:#B08D3E;
+  --brass-bright:#E7C877;
+  --accent:#2F5FA8;
+  --accent-bright:#5C8FE0;
+  --line: rgba(176,141,62,0.25);
+  --shadow: 0 12px 34px rgba(0,0,0,0.5);
+  --glow1: rgba(47,95,168,0.22);
+  --glow2: rgba(176,141,62,0.12);
+  --accent-wash: rgba(47,95,168,0.10);
+  --accent-wash-strong: rgba(47,95,168,0.20);
+  --hero-shadow: rgba(47,95,168,0.45);
+  --display: 'Cinzel', serif;
+  --display-deco: 'Cinzel Decorative', serif;
+  --body: 'EB Garamond', serif;
+}
+
+[data-theme="branco"]{
+  --void:#F7F1E3;
+  --void-2:#EFE6CF;
+  --panel:#FFFDF6;
+  --parchment:#2B2013;
+  --parchment-dim:#5B4A30;
+  --parchment-faint:#8A7A5C;
+  --brass:#9C7A2E;
+  --brass-bright:#C9A227;
+  --accent:#A8763A;
+  --accent-bright:#C89B4A;
+  --line: rgba(156,122,46,0.32);
+  --shadow: 0 10px 26px rgba(120,95,40,0.14);
+  --glow1: rgba(201,162,39,0.14);
+  --glow2: rgba(168,118,58,0.10);
+  --accent-wash: rgba(168,118,58,0.08);
+  --accent-wash-strong: rgba(168,118,58,0.16);
+  --hero-shadow: rgba(168,118,58,0.30);
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(1200px 700px at 15% -10%, var(--glow1), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, var(--glow2), transparent 55%),
+    var(--void);
+  color:var(--parchment);
+  font-family:var(--body);
+  font-size:18px;
+  line-height:1.7;
+  transition:background-color 0.4s ease, color 0.4s ease;
+}
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+}
+
+h1,h2,h3,.nav-item span{ font-family:var(--display); font-weight:600; letter-spacing:0.02em; margin:0; }
+a{ color:var(--brass-bright); text-decoration:none; }
+::selection{ background:var(--accent); color:#fff; }
+
+/* ============ ornamental divider ============ */
+.divider{ display:flex; align-items:center; gap:14px; margin:1.6rem 0; }
+.divider .line{ flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--brass), transparent); }
+.divider svg{ flex-shrink:0; opacity:0.85; color:var(--brass-bright); }
+
+/* ============ theme switcher ============ */
+.theme-switch{
+  display:flex; justify-content:center; align-items:center; gap:0.7rem;
+  padding:0.55rem 1rem;
+  background:var(--void-2);
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.theme-switch .label{
+  color:var(--parchment-faint);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  font-family:var(--display);
+  font-size:0.68rem;
+}
+.theme-switch .group{
+  display:inline-flex;
+  border:1px solid var(--line);
+  border-radius:999px;
+  overflow:hidden;
+}
+.theme-btn{
+  display:flex; align-items:center; gap:0.5rem;
+  padding:0.4rem 0.95rem;
+  background:transparent;
+  border:none;
+  color:var(--parchment-dim);
+  cursor:pointer;
+  font-family:var(--display);
+  font-size:0.78rem;
+  transition:all 0.25s ease;
+}
+.theme-btn .swatch{ width:11px; height:11px; border-radius:50%; box-shadow:0 0 0 1px rgba(0,0,0,0.25) inset; flex-shrink:0; }
+.theme-btn[data-theme="azul"] .swatch{ background:linear-gradient(135deg, #E7C877, #2F5FA8); }
+.theme-btn[data-theme="branco"] .swatch{ background:linear-gradient(135deg, #C9A227, #F7F1E3); }
+.theme-btn.active{ background:var(--accent-wash-strong); color:var(--parchment); }
+.theme-btn:hover{ color:var(--parchment); }
+
+/* ============ page header (small, on every inner page) ============ */
+header.page-head{
+  padding:3.6rem 1.5rem 2.6rem;
+  text-align:center;
+  border-bottom:1px solid var(--line);
+  position:relative;
+}
+header.page-head .eyebrow{
+  font-family:var(--display);
+  font-size:0.74rem;
+  letter-spacing:0.38em;
+  text-transform:uppercase;
+  color:var(--brass-bright);
+  display:block;
+  margin-bottom:0.9rem;
+}
+header.page-head h1{
+  font-family:var(--display-deco);
+  font-size:clamp(2rem, 4.6vw, 3rem);
+  color:var(--parchment);
+}
+header.page-head p{
+  max-width:560px;
+  margin:1rem auto 0;
+  color:var(--parchment-dim);
+  font-style:italic;
+}
+
+/* ============ hero (capa / home only) ============ */
+header.hero{
+  position:relative;
+  min-height:74vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:4.5rem 1.5rem 4rem;
+  overflow:hidden;
+  border-bottom:1px solid var(--line);
+}
+header.hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+  pointer-events:none;
+}
+.eyebrow{
+  font-family:var(--display);
+  font-size:0.78rem;
+  letter-spacing:0.42em;
+  text-transform:uppercase;
+  color:var(--brass-bright);
+  margin-bottom:1.4rem;
+}
+.hero h1{
+  font-family:var(--display-deco);
+  font-size:clamp(2.6rem, 6vw, 4.6rem);
+  color:var(--parchment);
+  text-shadow:0 2px 26px var(--hero-shadow);
+  line-height:1.08;
+}
+.hero p.tagline{
+  max-width:640px;
+  margin:1.6rem auto 0;
+  color:var(--parchment-dim);
+  font-size:1.22rem;
+  font-style:italic;
+}
+.hero .note{
+  margin-top:2.6rem;
+  font-size:0.86rem;
+  color:var(--parchment-faint);
+  border:1px solid var(--line);
+  padding:0.6rem 1.1rem;
+  border-radius:3px;
+  background:rgba(0,0,0,0.08);
+}
+.hero .cards{
+  margin-top:3.2rem;
+  display:flex; flex-wrap:wrap; justify-content:center; gap:0.8rem;
+}
+.hero .cards a{
+  display:flex; align-items:center; gap:0.5rem;
+  padding:0.7rem 1.3rem;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--parchment-dim);
+  font-family:var(--display);
+  font-size:0.88rem;
+  transition:all 0.25s ease;
+}
+.hero .cards a:hover{ color:var(--parchment); border-color:var(--brass); background:var(--accent-wash); }
+.hero .cards .seal{
+  width:8px; height:8px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--brass-bright), var(--accent) 75%);
+}
+
+/* ============ nav — wax seals, real links ============ */
+nav.tabs{
+  position:sticky; top:0; z-index:20;
+  display:flex; justify-content:center; gap:0.4rem;
+  padding:0.9rem 1rem;
+  background:var(--void-2);
+  border-bottom:1px solid var(--line);
+  overflow-x:auto;
+}
+.nav-item{
+  display:flex; align-items:center; gap:0.55rem;
+  padding:0.55rem 1.1rem;
+  border:1px solid transparent;
+  border-radius:999px;
+  background:none;
+  color:var(--parchment-dim);
+  font-size:0.92rem;
+  white-space:nowrap;
+  transition:all 0.25s ease;
+}
+.nav-item .seal{
+  width:9px; height:9px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--brass-bright), var(--accent) 75%);
+  box-shadow:0 0 0 2px rgba(176,141,62,0.15);
+  transition:box-shadow 0.25s ease, transform 0.25s ease;
+}
+.nav-item:hover{ color:var(--parchment); border-color:var(--line); }
+.nav-item.active{
+  color:var(--parchment);
+  background:var(--accent-wash-strong);
+  border-color:var(--brass);
+}
+.nav-item.active .seal{
+  box-shadow:0 0 0 3px rgba(217,179,108,0.28), 0 0 14px 2px var(--accent-bright);
+  transform:scale(1.15);
+}
+
+/* ============ page body ============ */
+main{ max-width:920px; margin:0 auto; padding:0 1.5rem; }
+section.panel{ padding:4.2rem 0; }
+
+.kicker{
+  font-family:var(--display);
+  font-size:0.78rem;
+  letter-spacing:0.32em;
+  text-transform:uppercase;
+  color:var(--brass-bright);
+  display:block;
+  margin-bottom:0.8rem;
+}
+section.panel h2{ font-size:clamp(1.7rem, 3.4vw, 2.3rem); color:var(--parchment); }
+
+.lede{
+  font-size:1.28rem;
+  color:var(--parchment-dim);
+  max-width:60ch;
+  margin-top:1rem;
+}
+
+.lore p{ max-width:66ch; color:var(--parchment); }
+.lore p:first-of-type::first-letter{
+  font-family:var(--display-deco);
+  font-size:3.6rem;
+  float:left;
+  line-height:0.8;
+  padding:0.1rem 0.5rem 0 0;
+  color:var(--brass-bright);
+}
+.lore .aside{
+  margin-top:1.6rem;
+  padding:1.1rem 1.3rem;
+  border-left:2px solid var(--accent-bright);
+  background:var(--accent-wash);
+  font-style:italic;
+  color:var(--parchment-dim);
+}
+
+/* ============ card grids (raças / classes) ============ */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+  gap:1.1rem;
+  margin-top:2.2rem;
+}
+.card{
+  background:linear-gradient(180deg, var(--panel), var(--void-2));
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:1.5rem 1.5rem 1.6rem;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.card::before{
+  content:"";
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--brass), transparent);
+  opacity:0.7;
+}
+.card .icon{ width:38px; height:38px; margin-bottom:0.9rem; color:var(--brass-bright); }
+.card h3{ font-size:1.15rem; color:var(--parchment); margin-bottom:0.35rem; }
+.card .role{ font-size:0.82rem; color:var(--brass-bright); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.8rem; display:block; }
+.card p{ color:var(--parchment-dim); font-size:0.98rem; margin:0 0 0.9rem; }
+.card ul{ margin:0; padding-left:1.15rem; color:var(--parchment-dim); font-size:0.92rem; }
+.card li{ margin-bottom:0.3rem; }
+.card li b{ color:var(--parchment); font-weight:600; }
+
+/* ============ regras ============ */
+.rule-block{
+  margin-top:2.2rem;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+}
+.rule-block h3{
+  font-size:1rem;
+  padding:1rem 1.4rem;
+  background:var(--accent-wash-strong);
+  border-bottom:1px solid var(--line);
+  color:var(--parchment);
+}
+.rule-block .body{ padding:1.3rem 1.4rem 1.5rem; color:var(--parchment-dim); font-size:0.98rem; }
+.rule-block table{ width:100%; border-collapse:collapse; margin-top:0.8rem; font-size:0.92rem; }
+.rule-block td{ padding:0.4rem 0.6rem; border-bottom:1px solid var(--line); color:var(--parchment-dim); }
+.rule-block td:first-child{ color:var(--brass-bright); font-family:var(--display); font-size:0.82rem; white-space:nowrap; }
+
+/* ============ footer ============ */
+footer{
+  text-align:center;
+  padding:3.5rem 1.5rem 4rem;
+  color:var(--parchment-faint);
+  font-size:0.86rem;
+}
+footer .divider{ max-width:220px; margin-left:auto; margin-right:auto; }
+
+@media (max-width:640px){
+  section.panel{ padding:3rem 0; }
+  nav.tabs{ justify-content:flex-start; }
+}
+
+</style>
+</head>
+<body>
+<div class="theme-switch">
+  <span class="label">Tema</span>
+  <div class="group">
+    <button type="button" class="theme-btn" data-theme="azul"><span class="swatch"></span>Azul Místico</button>
+    <button type="button" class="theme-btn" data-theme="branco"><span class="swatch"></span>Branco &amp; Dourado</button>
+  </div>
+</div>
+
+<nav class="tabs">
+  <a class="nav-item" href="index.html"><span class="seal"></span><span>Início</span></a>
+  <a class="nav-item active" href="historia.html"><span class="seal"></span><span>História</span></a>
+  <a class="nav-item" href="racas.html"><span class="seal"></span><span>Raças</span></a>
+  <a class="nav-item" href="classes.html"><span class="seal"></span><span>Classes</span></a>
+  <a class="nav-item" href="regras.html"><span class="seal"></span><span>Regras</span></a>
+  <a class="nav-item" href="ficha.html"><span class="seal"></span><span>Ficha</span></a>
+</nav>
+
+<header class="page-head">
+  <span class="eyebrow">O mundo</span>
+  <h1>Varel — O Reino Além do Mar</h1>
+  <p>"Antes de existirem mapas, existiam histórias. E antes das histórias, existiam coisas que ninguém deveria lembrar."</p>
+</header>
+
+<main>
+  <section class="panel">
+    <div class="rule-block">
+      <h3>A Era do Primeiro Rei</h3>
+      <div class="body lore" style="padding-top:1.3rem;">
+        <p>Varel nasceu em uma terra distante, separada do restante do mundo por um oceano tão vasto que os antigos o chamavam de Mar Sem Fim. As primeiras civilizações surgiram ao redor de uma enorme árvore branca, conhecida como Elyndra. Suas raízes atravessavam toda a terra e, segundo as antigas lendas, carregavam uma energia diferente da mana conhecida pelos povos de outros continentes.</p>
+        <p>Essa energia ficou conhecida como Essência. Durante milhares de anos, Varel cresceu completamente isolado, e seus habitantes acreditavam que eram os únicos povos existentes no mundo. Até que encontraram as primeiras ruínas.</p>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <h3>As Ruínas do Céu</h3>
+      <div class="body">
+        <p>As ruínas foram encontradas nas profundezas de uma montanha. Não pertenciam a nenhuma civilização conhecida de Varel. Suas construções eram feitas de um material extremamente resistente, coberto por símbolos que ninguém conseguia traduzir. Os estudiosos descobriram apenas uma palavra repetida em quase todas as paredes.</p>
+        <div class="aside">AETHER.</div>
+        <p style="margin-top:1.1rem;">Ninguém sabia seu significado. Alguns acreditavam ser o nome de uma antiga divindade. Outros acreditavam que era o nome de um lugar. As pesquisas foram abandonadas depois que vários estudiosos começaram a ter o mesmo sonho: um coração brilhando no céu, uma guerra, nove grandes territórios, e um continente sendo destruído.</p>
+        <p style="margin-top:0.9rem;">Os registros sobre esse acontecimento foram escondidos pelo primeiro rei de Varel.</p>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <h3>A Guerra das Duas Coroas</h3>
+      <div class="body">
+        <p>Séculos depois, Varel foi dividido entre dois grandes impérios: Valen, conhecido por seus guerreiros e cavaleiros, e Nareth, conhecido por seus magos e estudiosos. Durante quase cinquenta anos, os dois impérios lutaram pelo controle da Elyndra — até que algo caiu do céu.</p>
+        <p style="margin-top:0.9rem;">Um fragmento brilhante atravessou as nuvens e atingiu o centro da floresta. Quando os soldados chegaram ao local, encontraram uma pedra negra cercada por raízes. Dentro dela havia uma criatura que ninguém em Varel conhecia — possuía escamas, chifres, e olhos semelhantes aos de um dragão.</p>
+        <p style="margin-top:0.9rem;">Antes de morrer, a criatura pronunciou algumas palavras.</p>
+        <div class="aside">"Os dragões ainda vivem..."</div>
+        <p style="margin-top:1.1rem;">Foi a primeira vez que o nome dragão apareceu na história de Varel. E também a primeira vez que alguém mencionou Aetherium.</p>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <h3>O Reino Atual</h3>
+      <div class="body">
+        <p>Hoje Varel é governado por uma monarquia que tenta manter essas histórias enterradas. A capital, Elyndor, foi construída sobre as antigas raízes da Elyndra. É uma cidade gigantesca, dividida em três níveis: no nível superior vivem a nobreza e a família real; no nível intermediário estão comerciantes, aventureiros e artesãos; e abaixo da cidade existem ruínas muito mais antigas, das quais ninguém sabe quem as construiu. A entrada é proibida. Oficialmente.</p>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <h3>As Diferenças entre Varel e Aetherium</h3>
+      <div class="body">
+        <p>Varel desenvolveu uma forma própria de energia: a Essência. Ela é influenciada pela alma e pelas emoções de cada indivíduo — por isso, duas pessoas podem possuir a mesma técnica, mas manifestá-la de maneiras completamente diferentes.</p>
+        <p style="margin-top:0.9rem;">Entretanto, nos últimos anos algo mudou: a Essência começou a reagir à mana, e ninguém sabe por quê. Criaturas começaram a nascer com características que não pertencem às espécies de Varel — algumas possuem asas, outras escamas, e outras apresentam características de raças que, segundo os estudiosos locais, não existem.</p>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <h3>O Visitante</h3>
+      <div class="body">
+        <p>Há aproximadamente vinte anos, um homem apareceu em Varel. Ele chegou sozinho, sem navio, sem documentos, sem memória. A única coisa encontrada com ele era uma espada quebrada contendo um símbolo desconhecido: um círculo dividido em nove partes — o mesmo símbolo encontrado nas ruínas antigas.</p>
+        <p style="margin-top:0.9rem;">O homem passou os últimos anos vivendo como ferreiro. Nunca contou de onde veio. Até que, pouco antes de morrer, disse ao rei:</p>
+        <div class="aside">"Se algum dia vocês encontrarem pessoas vindas do outro lado do mar... não contem a elas sobre o Coração."</div>
+        <p style="margin-top:1.1rem;">Ninguém entendeu o que ele quis dizer.</p>
+      </div>
+    </div>
+
+    <div class="rule-block">
+      <h3>O Eclipse</h3>
+      <div class="body">
+        <p>Recentemente, algo ainda mais estranho começou a acontecer. O céu de Varel apresentou uma coloração avermelhada durante alguns minutos — um fenômeno que os astrônomos chamaram de Eclipse Carmesim. Na mesma noite, dezenas de criaturas sofreram mutações: algumas morreram, outras evoluíram, e algumas simplesmente desapareceram.</p>
+        <p style="margin-top:0.9rem;">No dia seguinte, uma criatura desconhecida foi encontrada morta próxima à costa. Seu corpo possuía uma pequena marca no peito — um símbolo antigo, o mesmo símbolo encontrado nas ruínas.</p>
+        <p style="margin-top:0.9rem;">E, pela primeira vez em milhares de anos, as raízes da Elyndra começaram a brilhar.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="divider">
+    <div class="line"></div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--brass-bright)"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+    <div class="line"></div>
+  </div>
+  Crônicas de Varel — estrutura de exemplo.
+</footer>
+
+<script>
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var theme = params.get('tema');
+  if(theme !== 'azul' && theme !== 'branco'){ theme = 'azul'; }
+
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    document.querySelectorAll('.theme-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.theme === t);
+    });
+    document.querySelectorAll('nav.tabs a, .hero .cards a').forEach(function(a){
+      var href = a.getAttribute('href');
+      if(!href) return;
+      var base = href.split('?')[0];
+      a.setAttribute('href', base + '?tema=' + t);
+    });
+  }
+
+  applyTheme(theme);
+
+  document.querySelectorAll('.theme-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){ applyTheme(btn.dataset.theme); });
+  });
+})();
+</script>
+</body>
+</html>

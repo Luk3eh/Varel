@@ -1,0 +1,30 @@
+COMO ADICIONAR AS FOTOS DAS RAÇAS
+==================================
+
+Coloque os arquivos de imagem nesta pasta (images/racas/) usando exatamente
+estes nomes (pode ser .jpg ou .png — o site tenta um e cai pro outro sozinho):
+
+  elfos.jpg
+  humanos.jpg
+  draconis.jpg
+  vampiros.jpg
+  malus.jpg
+  serafins.jpg
+  kitsunes.jpg
+  bestiais.jpg
+  orcs.jpg
+  fadas.jpg
+  tritoes.jpg
+  gigantes.jpg
+  eidolons.jpg
+  quimeras.jpg
+  arcanos.jpg
+  cronianos.jpg
+  astralis.jpg
+  revenantes.jpg
+  alados.jpg
+  nagas.jpg
+  draconianos.jpg
+
+Se uma raça não tiver imagem ainda, o card continua funcionando normalmente
+com o ícone no lugar — nada quebra.
